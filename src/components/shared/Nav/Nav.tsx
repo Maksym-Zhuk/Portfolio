@@ -1,5 +1,6 @@
+'use client';
 import { Button } from '@/components/ui/button';
-import type { IMenu } from '@/constants/menu.d';
+import type { IMenu } from '@/types/menu';
 import { Menu } from '@/constants/menu';
 import Link from 'next/link';
 

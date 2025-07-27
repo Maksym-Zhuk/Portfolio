@@ -13,7 +13,7 @@ export default function Header() {
 
   return (
     <header
-      className={`w-full h-[8dvh] sticky top-0 flex justify-center items-center xl:px-20 px-3 sm:px-10 pt-3 z-3 ${isOpen ? 'bg-[#171717]' : 'bg-transparent'} `}
+      className={`w-full h-17.5 sticky top-0 flex justify-center items-center xl:px-20 px-3 sm:px-10 pt-3 z-3 ${isOpen ? 'bg-[#171717]' : 'bg-transparent'} `}
     >
       <div className="w-full h-full bg-[#262626] rounded-3xl flex md:justify-center justify-end items-center px-4 relative">
         <div className="absolute left-5">

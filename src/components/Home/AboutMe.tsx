@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function AboutMe() {
   return (
-    <div className="lg:w-2/4 lg:h-[90dvh] sm:h-[70dvh] h-[80dvh] flex lg:justify-start justify-center items-center">
+    <div className="lg:w-2/4 flex lg:justify-start justify-center items-center">
       <CodeEditor
         cursor
         className="xl:min-w-[600px] lg:w-[490px] md:w-4/5 w-full lg:h-[580px] sm:h-[500px] min-[400px]:h-[600px] h-[650px]"

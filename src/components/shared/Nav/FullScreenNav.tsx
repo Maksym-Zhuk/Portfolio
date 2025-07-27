@@ -1,7 +1,7 @@
 'use client';
 import { Divide as Hamburger } from 'hamburger-react';
 import { Menu } from '@/constants/menu';
-import type { IMenu } from '@/constants/menu.d';
+import type { IMenu } from '@/types/menu';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 

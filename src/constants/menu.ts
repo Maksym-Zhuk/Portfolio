@@ -1,4 +1,4 @@
-import type { IMenu } from './menu.d';
+import type { IMenu } from '../types/menu';
 
 export const Menu: IMenu[] = [
   {
