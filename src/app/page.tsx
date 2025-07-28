@@ -1,4 +1,5 @@
 import AboutMe from '@/components/Home/AboutMe';
+import ContactsScreen from '@/components/Home/Contacts/ContactsScreen';
 import SkillsScreen from '@/components/Home/Skills/SkillsScreen';
 import Image from 'next/image';
 
@@ -19,6 +20,7 @@ export default function Home() {
         </div>
       </main>
       <SkillsScreen />
+      <ContactsScreen />
     </div>
   );
 }

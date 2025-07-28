@@ -17,7 +17,7 @@ export default function FullScreenNav({ isOpen, setIsOpen }: Props) {
         <Hamburger toggled={isOpen} toggle={() => setIsOpen(!isOpen)} />
       </div>
       <div
-        className={`absolute w-full h-[100dvh] top-[6.55dvh] left-0 bg-[#171717] ${isOpen ? 'flex' : 'hidden'}`}
+        className={`absolute w-full h-[100dvh] top-14.5 left-0 bg-[#171717] ${isOpen ? 'flex' : 'hidden'}`}
       >
         <nav className="w-full h-full flex justify-center items-center">
           <ul className="flex flex-col justify-center items-center gap-10 mb-[10dvh]">
