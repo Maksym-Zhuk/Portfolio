@@ -10,6 +10,7 @@ export async function GET() {
   }
 
   const data = await res.json();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const filtered = data.filter((item: any) => item.description !== null);
 
   return Response.json(filtered);

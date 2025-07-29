@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import ProjectCard from '@/components/Projects/ProjectCard';
 import { useGetRepos } from '@/hooks/useGetRepos';
