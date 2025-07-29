@@ -7,11 +7,19 @@ export default function Projects() {
   const { data, isLoading, error } = useGetRepos();
 
   if (error) {
-    return <div>Error</div>;
+    return (
+      <div className="w-full h-dvh flex justify-center items-center text-2xl">
+        Error
+      </div>
+    );
   }
 
   if (isLoading) {
-    return <div>isLoading</div>;
+    return (
+      <div className="w-full h-dvh flex justify-center items-center text-2xl">
+        Loading...
+      </div>
+    );
   }
 
   console.log(data);
