@@ -1,6 +1,7 @@
 import AboutMe from '@/components/Home/AboutMe';
 import ContactsScreen from '@/components/Home/Contacts/ContactsScreen';
 import SkillsScreen from '@/components/Home/Skills/SkillsScreen';
+import Footer from '@/components/shared/Footer';
 import Image from 'next/image';
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
       </main>
       <SkillsScreen />
       <ContactsScreen />
+      <Footer />
     </div>
   );
 }
