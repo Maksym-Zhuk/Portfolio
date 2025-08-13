@@ -23,7 +23,7 @@ export const Skills: Skill[] = [
     logo: '/JavaScript.svg',
     title: 'JavaScript',
     firstTried: '2023-10-22',
-    category: 'Full stack',
+    category: 'Language',
   },
   {
     logo: '/jQuery.svg',
@@ -59,7 +59,7 @@ export const Skills: Skill[] = [
     logo: '/TypeScript.svg',
     title: 'TypeScript',
     firstTried: '2024-12-18',
-    category: 'Full stack',
+    category: 'Language',
   },
   {
     logo: '/Vite.js.svg',
@@ -210,5 +210,11 @@ export const Skills: Skill[] = [
     title: 'Telegram Web App',
     firstTried: '2025-05-21',
     category: 'Frontend',
+  },
+  {
+    logo: '/Rust.svg',
+    title: 'Rust',
+    firstTried: '2025-07-22',
+    category: 'Language',
   },
 ];
