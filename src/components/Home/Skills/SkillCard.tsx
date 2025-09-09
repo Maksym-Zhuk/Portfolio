@@ -7,13 +7,24 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 interface Props {
   data: Skill;
 }
 export default function SkillCard({ data }: Props) {
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const start = new Date(data.firstTried);
-  const end = new Date();
+  const end = now;
 
   let years = end.getFullYear() - start.getFullYear();
   let months = end.getMonth() - start.getMonth();
