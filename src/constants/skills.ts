@@ -211,10 +211,10 @@ export const Skills: Skill[] = [
     firstTried: '2025-05-21',
     category: 'Frontend',
   },
-  // {
-  //   logo: '/Rust.svg',
-  //   title: 'Rust',
-  //   firstTried: '2025-07-22',
-  //   category: 'Language',
-  // },
+  {
+    logo: '/Rust.svg',
+    title: 'Rust',
+    firstTried: '2025-07-22',
+    category: 'Language',
+  },
 ];

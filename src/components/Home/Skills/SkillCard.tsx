@@ -1,3 +1,4 @@
+'use client';
 import { Skill } from '@/types/skills';
 import {
   Dialog,
