@@ -4,13 +4,13 @@ export const Skills: Skill[] = [
   {
     logo: '/HTML5.svg',
     title: 'HTML',
-    firstTried: '2023-06-29',
+    firstTried: '2023-06-5',
     category: 'Frontend',
   },
   {
     logo: '/CSS3.svg',
     title: 'CSS',
-    firstTried: '2023-06-05',
+    firstTried: '2023-06-29',
     category: 'Frontend',
   },
   {
