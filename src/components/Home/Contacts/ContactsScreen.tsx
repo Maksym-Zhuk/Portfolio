@@ -1,26 +1,56 @@
-import { Contacts } from '@/constants/contacts';
-import { Contact } from '@/types/contacts';
+import type { Contact } from '@/db/schema';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function ContactsScreen() {
+interface Props {
+  contacts: Contact[];
+}
+
+export default function ContactsScreen({ contacts }: Props) {
   return (
-    <div
+    <section
       id="contacts"
-      className="w-full min-h-[50dvh] flex flex-col justify-center items-center gap-10 scroll-mt-28 pb-10"
+      aria-label="Contact links"
+      className="w-full flex flex-col justify-center gap-10 scroll-mt-28 py-24"
     >
-      <h2 className="text-4xl">Contacts</h2>
-      <div className="flex flex-wrap justify-center gap-10">
-        {Contacts.map((item: Contact, index) => (
+      <div className="flex flex-col gap-3">
+        <span className="text-primary font-mono text-sm tracking-widest uppercase">
+          Reach out
+        </span>
+        <h2 className="text-4xl font-bold">Contacts</h2>
+      </div>
+
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+        {contacts.map((item: Contact) => (
           <Link
-            key={index}
+            key={item.id}
             href={item.link}
-            className="bg-[#262626] w-40 h-40 flex justify-center items-center rounded-xl"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${item.title}: ${item.handle ?? item.title}`}
+            className="group flex flex-col items-center justify-center gap-4 py-10 px-6 bg-card border border-border rounded-2xl hover:border-primary/50 hover:glow-primary-sm transition-all duration-200 focus-visible:outline-2 focus-visible:outline-primary min-h-[160px]"
           >
-            <Image src={item.icon} alt={item.title} width={60} height={60} />
+            <Image
+              src={item.iconUrl}
+              alt=""
+              aria-hidden="true"
+              width={44}
+              height={44}
+              className="object-contain group-hover:scale-110 transition-transform duration-200"
+            />
+            <div className="flex flex-col items-center gap-1 text-center">
+              <span className="font-semibold text-base text-foreground">
+                {item.title}
+              </span>
+              {item.handle && (
+                <span className="text-xs font-mono text-muted-foreground">
+                  {item.handle}
+                </span>
+              )}
+            </div>
           </Link>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

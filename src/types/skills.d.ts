@@ -3,4 +3,6 @@ export interface Skill {
   title: string;
   firstTried: string;
   category: string;
+  description: string;
+  docsUrl: string;
 }

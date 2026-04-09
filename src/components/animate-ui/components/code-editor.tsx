@@ -32,6 +32,7 @@ type CodeEditorProps = Omit<React.ComponentProps<'div'>, 'onCopy'> & {
   title?: string;
   onDone?: () => void;
   onCopy?: (content: string) => void;
+  customHeader?: React.ReactNode;
 };
 
 function CodeEditor({
@@ -56,6 +57,7 @@ function CodeEditor({
   title,
   onDone,
   onCopy,
+  customHeader,
   ...props
 }: CodeEditorProps) {
   const { resolvedTheme } = useTheme();
@@ -184,7 +186,9 @@ function CodeEditor({
       )}
       {...props}
     >
-      {header ? (
+      {customHeader ? (
+        customHeader
+      ) : header ? (
         <div className="bg-muted border-b border-border/75 dark:border-border/50 relative flex flex-row items-center justify-between gap-y-2 h-10 px-4">
           {dots && (
             <div className="flex flex-row gap-x-2">
