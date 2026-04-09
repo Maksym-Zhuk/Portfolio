@@ -9,7 +9,7 @@ export const Menu: IMenu[] = [
   {
     id: 2,
     title: 'Skills',
-    link: '/#skills',
+    link: '/skills',
   },
   {
     id: 3,

@@ -13,5 +13,9 @@ export default function ThemesProvider({
   }, []);
 
   if (!mounted) return null;
-  return <ThemeProvider attribute="class">{children}</ThemeProvider>;
+  return (
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+      {children}
+    </ThemeProvider>
+  );
 }
