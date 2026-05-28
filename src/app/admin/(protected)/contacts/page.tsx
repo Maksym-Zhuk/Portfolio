@@ -10,6 +10,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
+import { Pencil, Trash2 } from 'lucide-react';
+import { ConfirmButton } from '@/components/admin/ConfirmButton';
 import Image from 'next/image';
 import type { Contact } from '@/db/schema';
 
@@ -134,20 +136,37 @@ export default function ContactsPage() {
                   </td>
                   <td className="px-4 py-3 hidden sm:table-cell text-muted-foreground font-mono text-xs">{item.handle ?? '—'}</td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center gap-1 justify-end">
-                      <Button size="sm" variant="ghost" onClick={() => openEdit(item)}>Edit</Button>
+                    <div className="flex items-center gap-0.5 justify-end">
                       <Button
-                        size="sm"
+                        size="icon"
                         variant="ghost"
-                        className="text-destructive hover:text-destructive"
-                        onClick={() => { if (confirm(`Delete "${item.title}"?`)) deleteMutation.mutate(item.id); }}
+                        className="size-8 text-muted-foreground hover:text-foreground"
+                        aria-label={`Edit ${item.title}`}
+                        onClick={() => openEdit(item)}
                       >
-                        Del
+                        <Pencil className="size-4" />
                       </Button>
+                      <ConfirmButton
+                        size="icon"
+                        className="size-8 text-muted-foreground hover:text-destructive"
+                        aria-label={`Delete ${item.title}`}
+                        title="Delete contact"
+                        description={`"${item.title}" will be permanently removed.`}
+                        onConfirm={() => deleteMutation.mutate(item.id)}
+                      >
+                        <Trash2 className="size-4" />
+                      </ConfirmButton>
                     </div>
                   </td>
                 </tr>
               ))}
+              {contactList.length === 0 && (
+                <tr>
+                  <td colSpan={3} className="px-4 py-6 text-center text-muted-foreground text-sm">
+                    No contacts yet.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

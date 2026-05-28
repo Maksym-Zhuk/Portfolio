@@ -13,6 +13,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
+import { Pencil, Trash2 } from 'lucide-react';
+import { ConfirmButton } from '@/components/admin/ConfirmButton';
 import Image from 'next/image';
 import type { Skill } from '@/db/schema';
 
@@ -156,22 +158,37 @@ export default function SkillsPage() {
                   </td>
                   <td className="px-4 py-3 hidden md:table-cell text-muted-foreground font-mono text-xs">{skill.firstTried}</td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center gap-1 justify-end">
-                      <Button size="sm" variant="ghost" onClick={() => openEdit(skill)}>Edit</Button>
+                    <div className="flex items-center gap-0.5 justify-end">
                       <Button
-                        size="sm"
+                        size="icon"
                         variant="ghost"
-                        className="text-destructive hover:text-destructive"
-                        onClick={() => {
-                          if (confirm(`Delete "${skill.title}"?`)) deleteMutation.mutate(skill.id);
-                        }}
+                        className="size-8 text-muted-foreground hover:text-foreground"
+                        aria-label={`Edit ${skill.title}`}
+                        onClick={() => openEdit(skill)}
                       >
-                        Del
+                        <Pencil className="size-4" />
                       </Button>
+                      <ConfirmButton
+                        size="icon"
+                        className="size-8 text-muted-foreground hover:text-destructive"
+                        aria-label={`Delete ${skill.title}`}
+                        title="Delete skill"
+                        description={`"${skill.title}" will be permanently removed.`}
+                        onConfirm={() => deleteMutation.mutate(skill.id)}
+                      >
+                        <Trash2 className="size-4" />
+                      </ConfirmButton>
                     </div>
                   </td>
                 </tr>
               ))}
+              {skills.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="px-4 py-6 text-center text-muted-foreground text-sm">
+                    No skills yet.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

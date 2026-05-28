@@ -14,6 +14,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
+import { Pencil, Trash2 } from 'lucide-react';
+import { ConfirmButton } from '@/components/admin/ConfirmButton';
 import type { Organization, GithubOrg } from '@/db/schema';
 
 // ── Featured Orgs schema ──────────────────────────────────────────────────────
@@ -179,9 +181,26 @@ export default function OrganizationsPage() {
                     {o.tags?.map((tag) => <Badge key={tag} variant="outline" className="text-xs font-mono">{tag}</Badge>)}
                   </div>
                 </div>
-                <div className="flex gap-1 shrink-0">
-                  <Button size="sm" variant="ghost" onClick={() => openEditOrg(o)}>Edit</Button>
-                  <Button size="sm" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => { if (confirm(`Delete "${o.name}"?`)) deleteOrgMutation.mutate(o.id); }}>Del</Button>
+                <div className="flex gap-0.5 shrink-0">
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="size-8 text-muted-foreground hover:text-foreground"
+                    aria-label={`Edit ${o.name}`}
+                    onClick={() => openEditOrg(o)}
+                  >
+                    <Pencil className="size-4" />
+                  </Button>
+                  <ConfirmButton
+                    size="icon"
+                    className="size-8 text-muted-foreground hover:text-destructive"
+                    aria-label={`Delete ${o.name}`}
+                    title="Delete organization"
+                    description={`"${o.name}" will be permanently removed.`}
+                    onConfirm={() => deleteOrgMutation.mutate(o.id)}
+                  >
+                    <Trash2 className="size-4" />
+                  </ConfirmButton>
                 </div>
               </div>
             ))}
@@ -225,7 +244,19 @@ export default function OrganizationsPage() {
                       />
                     </td>
                     <td className="px-4 py-3">
-                      <Button size="sm" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => { if (confirm(`Remove "${go.orgLogin}"?`)) deleteGithubOrgMutation.mutate(go.id); }}>Del</Button>
+                      <div className="flex justify-end">
+                        <ConfirmButton
+                          size="icon"
+                          className="size-8 text-muted-foreground hover:text-destructive"
+                          aria-label={`Remove ${go.orgLogin}`}
+                          title="Remove GitHub org"
+                          description={`"${go.orgLogin}" will no longer have its repos fetched.`}
+                          confirmLabel="Remove"
+                          onConfirm={() => deleteGithubOrgMutation.mutate(go.id)}
+                        >
+                          <Trash2 className="size-4" />
+                        </ConfirmButton>
+                      </div>
                     </td>
                   </tr>
                 ))}

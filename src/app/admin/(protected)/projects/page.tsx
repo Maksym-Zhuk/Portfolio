@@ -12,6 +12,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
+import { Pencil, Trash2 } from 'lucide-react';
+import { ConfirmButton } from '@/components/admin/ConfirmButton';
 import type { ProjectImage, CustomProject } from '@/db/schema';
 
 // ── Project Images ────────────────────────────────────────────────────────────
@@ -180,7 +182,18 @@ export default function ProjectsPage() {
                     <td className="px-4 py-3 font-mono text-xs">{img.repoName}</td>
                     <td className="px-4 py-3 hidden sm:table-cell text-muted-foreground font-mono text-xs truncate max-w-[200px]">{img.imageUrl}</td>
                     <td className="px-4 py-3">
-                      <Button size="sm" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => { if (confirm('Delete?')) deleteImageMutation.mutate(img.id); }}>Del</Button>
+                      <div className="flex justify-end">
+                        <ConfirmButton
+                          size="icon"
+                          className="size-8 text-muted-foreground hover:text-destructive"
+                          aria-label={`Delete mapping for ${img.repoName}`}
+                          title="Delete mapping"
+                          description={`The screenshot mapping for "${img.repoName}" will be removed.`}
+                          onConfirm={() => deleteImageMutation.mutate(img.id)}
+                        >
+                          <Trash2 className="size-4" />
+                        </ConfirmButton>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -219,9 +232,26 @@ export default function ProjectsPage() {
                     <td className="px-4 py-3 font-medium">{p.name}</td>
                     <td className="px-4 py-3 hidden sm:table-cell text-muted-foreground font-mono text-xs">{p.language ?? '—'}</td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-1 justify-end">
-                        <Button size="sm" variant="ghost" onClick={() => openEditProj(p)}>Edit</Button>
-                        <Button size="sm" variant="ghost" className="text-destructive hover:text-destructive" onClick={() => { if (confirm(`Delete "${p.name}"?`)) deleteProjMutation.mutate(p.id); }}>Del</Button>
+                      <div className="flex items-center gap-0.5 justify-end">
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="size-8 text-muted-foreground hover:text-foreground"
+                          aria-label={`Edit ${p.name}`}
+                          onClick={() => openEditProj(p)}
+                        >
+                          <Pencil className="size-4" />
+                        </Button>
+                        <ConfirmButton
+                          size="icon"
+                          className="size-8 text-muted-foreground hover:text-destructive"
+                          aria-label={`Delete ${p.name}`}
+                          title="Delete project"
+                          description={`"${p.name}" will be permanently removed.`}
+                          onConfirm={() => deleteProjMutation.mutate(p.id)}
+                        >
+                          <Trash2 className="size-4" />
+                        </ConfirmButton>
                       </div>
                     </td>
                   </tr>

@@ -4,6 +4,7 @@ import { db } from '@/db';
 import { aboutMe, skills, contacts, organizations, githubOrgs, customProjects, projectImages } from '@/db/schema';
 import { sql } from 'drizzle-orm';
 import Link from 'next/link';
+import { Wrench, AtSign, Building2, Github, FolderGit2, ImageIcon } from 'lucide-react';
 
 async function getCounts() {
   const [s, c, o, go, cp, pi] = await Promise.all([
@@ -25,12 +26,12 @@ async function getCounts() {
 }
 
 const CARDS = [
-  { label: 'Skills', key: 'skills' as const, href: '/admin/skills' },
-  { label: 'Contacts', key: 'contacts' as const, href: '/admin/contacts' },
-  { label: 'Feat. Orgs', key: 'organizations' as const, href: '/admin/organizations' },
-  { label: 'GitHub Orgs', key: 'githubOrgs' as const, href: '/admin/organizations' },
-  { label: 'Custom Projects', key: 'customProjects' as const, href: '/admin/projects' },
-  { label: 'Project Images', key: 'projectImages' as const, href: '/admin/projects' },
+  { label: 'Skills', key: 'skills' as const, href: '/admin/skills', icon: Wrench },
+  { label: 'Contacts', key: 'contacts' as const, href: '/admin/contacts', icon: AtSign },
+  { label: 'Feat. Orgs', key: 'organizations' as const, href: '/admin/organizations', icon: Building2 },
+  { label: 'GitHub Orgs', key: 'githubOrgs' as const, href: '/admin/organizations', icon: Github },
+  { label: 'Custom Projects', key: 'customProjects' as const, href: '/admin/projects', icon: FolderGit2 },
+  { label: 'Project Images', key: 'projectImages' as const, href: '/admin/projects', icon: ImageIcon },
 ];
 
 export default async function AdminDashboard() {
@@ -44,13 +45,14 @@ export default async function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        {CARDS.map(({ label, key, href }) => (
+        {CARDS.map(({ label, key, href, icon: Icon }) => (
           <Link
             key={key}
             href={href}
-            className="border border-border rounded-xl p-4 bg-card hover:border-primary/50 transition-colors duration-150 flex flex-col gap-1"
+            className="group border border-border rounded-xl p-4 bg-card hover:border-primary/50 transition-colors duration-150 flex flex-col gap-1"
           >
-            <span className="text-3xl font-bold font-mono text-primary">{counts[key]}</span>
+            <Icon className="size-4 text-muted-foreground group-hover:text-primary transition-colors duration-150" />
+            <span className="text-3xl font-bold font-mono text-primary mt-1">{counts[key]}</span>
             <span className="text-sm text-muted-foreground">{label}</span>
           </Link>
         ))}
