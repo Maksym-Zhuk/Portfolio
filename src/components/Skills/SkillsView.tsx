@@ -4,6 +4,7 @@ import { Skill } from '@/types/skills';
 import { useState } from 'react';
 import SkillPageCard from './SkillPageCard';
 import SkillTimeline from './SkillTimeline';
+import SectionHeading from '@/components/shared/SectionHeading';
 import { cn } from '@/lib/utils';
 
 const CATEGORY_ORDER = [
@@ -163,17 +164,12 @@ export default function SkillsView({ skills }: Props) {
     <div className="flex flex-col gap-12">
       {/* Page header + mode toggle */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
-        <div className="flex flex-col gap-3">
-          <span className="text-primary font-mono text-sm tracking-widest uppercase">
-            Stack
-          </span>
-          <div className="flex items-end gap-4 flex-wrap">
-            <h1 className="text-4xl font-bold">Skills</h1>
-            <span className="font-mono text-muted-foreground text-sm mb-1">
-              {skills.length} technologies
-            </span>
-          </div>
-        </div>
+        <SectionHeading
+          as="h1"
+          path="skills"
+          title="Skills"
+          meta={`${skills.length} technologies`}
+        />
 
         {/* View toggle */}
         <div

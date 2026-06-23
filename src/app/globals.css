@@ -45,37 +45,52 @@
 
 :root {
   --radius: 0.5rem;
-  --background: oklch(0.07 0 0);
-  --foreground: oklch(0.92 0 0);
-  --card: oklch(0.11 0 0);
-  --card-foreground: oklch(0.92 0 0);
-  --popover: oklch(0.11 0 0);
-  --popover-foreground: oklch(0.92 0 0);
-  --primary: oklch(0.72 0.19 142);
-  --primary-foreground: oklch(0.07 0 0);
-  --secondary: oklch(0.15 0 0);
-  --secondary-foreground: oklch(0.85 0 0);
-  --muted: oklch(0.14 0 0);
-  --muted-foreground: oklch(0.52 0 0);
-  --accent: oklch(0.72 0.19 142);
-  --accent-foreground: oklch(0.07 0 0);
-  --destructive: oklch(0.6 0.22 27);
-  --border: oklch(0.22 0.008 142);
-  --input: oklch(0.18 0.005 142);
-  --ring: oklch(0.72 0.19 142);
-  --chart-1: oklch(0.72 0.19 142);
-  --chart-2: oklch(0.6 0.14 195);
-  --chart-3: oklch(0.75 0.18 130);
-  --chart-4: oklch(0.65 0.22 303);
-  --chart-5: oklch(0.7 0.18 70);
-  --sidebar: oklch(0.11 0 0);
-  --sidebar-foreground: oklch(0.92 0 0);
-  --sidebar-primary: oklch(0.72 0.19 142);
-  --sidebar-primary-foreground: oklch(0.07 0 0);
-  --sidebar-accent: oklch(0.15 0 0);
-  --sidebar-accent-foreground: oklch(0.92 0 0);
-  --sidebar-border: oklch(0.22 0.008 142);
-  --sidebar-ring: oklch(0.72 0.19 142);
+
+  /* Neutrals: graphite, not pure black. Each layer steps ~0.06 in lightness so
+     surfaces visibly separate ("no black-on-black"), with a faint green tint
+     (chroma ≤0.01 toward hue 156) so the dark never reads as dead black. */
+  --background: oklch(0.11 0.004 156);
+  --foreground: oklch(0.93 0 0);
+  --card: oklch(0.17 0.006 156);
+  --card-foreground: oklch(0.93 0 0);
+  --popover: oklch(0.17 0.006 156);
+  --popover-foreground: oklch(0.93 0 0);
+
+  /* Signal green, calmed: chroma 0.19 → 0.13 so it reads refined, not neon.
+     Still ~9:1 on dark surfaces and as button text. */
+  --primary: oklch(0.76 0.13 153);
+  --primary-foreground: oklch(0.13 0.01 156);
+
+  --secondary: oklch(0.235 0.008 156);
+  --secondary-foreground: oklch(0.88 0 0);
+  --muted: oklch(0.205 0.006 156);
+  /* Muted body copy clears WCAG AA (≥4.5:1) on every surface. */
+  --muted-foreground: oklch(0.66 0.012 156);
+
+  /* Accent is a neutral hover surface (was the green) so ghost/outline hovers
+     stay quiet — green is reserved for deliberate primary/active states. */
+  --accent: oklch(0.235 0.008 156);
+  --accent-foreground: oklch(0.93 0 0);
+
+  --destructive: oklch(0.62 0.2 25);
+  --border: oklch(0.3 0.01 156);
+  --input: oklch(0.24 0.008 156);
+  --ring: oklch(0.76 0.13 153);
+
+  --chart-1: oklch(0.76 0.13 153);
+  --chart-2: oklch(0.62 0.12 215);
+  --chart-3: oklch(0.75 0.15 130);
+  --chart-4: oklch(0.66 0.17 303);
+  --chart-5: oklch(0.72 0.15 70);
+
+  --sidebar: oklch(0.17 0.006 156);
+  --sidebar-foreground: oklch(0.93 0 0);
+  --sidebar-primary: oklch(0.76 0.13 153);
+  --sidebar-primary-foreground: oklch(0.13 0.01 156);
+  --sidebar-accent: oklch(0.235 0.008 156);
+  --sidebar-accent-foreground: oklch(0.93 0 0);
+  --sidebar-border: oklch(0.3 0.01 156);
+  --sidebar-ring: oklch(0.76 0.13 153);
 }
 
 /* Subtle grid texture — technical / systems aesthetic */
@@ -97,7 +112,7 @@ body {
 
   /* Keyboard focus: visible green ring */
   :focus-visible {
-    outline: 2px solid oklch(0.72 0.19 142);
+    outline: 2px solid var(--ring);
     outline-offset: 2px;
   }
 }
@@ -109,8 +124,8 @@ body {
   left: 1rem;
   z-index: 9999;
   padding: 0.5rem 1rem;
-  background: oklch(0.72 0.19 142);
-  color: oklch(0.07 0 0);
+  background: var(--primary);
+  color: var(--primary-foreground);
   font-weight: 700;
   border-radius: 0 0 0.5rem 0.5rem;
   transition: top 0.2s;
@@ -119,12 +134,12 @@ body {
   top: 0;
 }
 
-/* Green glow utility */
+/* Green glow utility — derived from --primary so it tracks the accent */
 .glow-primary {
-  box-shadow: 0 0 24px oklch(0.72 0.19 142 / 0.25);
+  box-shadow: 0 0 24px oklch(from var(--primary) l c h / 0.22);
 }
 .glow-primary-sm {
-  box-shadow: 0 0 12px oklch(0.72 0.19 142 / 0.2);
+  box-shadow: 0 0 12px oklch(from var(--primary) l c h / 0.18);
 }
 
 /* Animated gradient border utility */
@@ -138,7 +153,7 @@ body {
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  background: linear-gradient(135deg, oklch(0.72 0.19 142 / 0.5), transparent, oklch(0.72 0.19 142 / 0.2));
+  background: linear-gradient(135deg, oklch(from var(--primary) l c h / 0.5), transparent, oklch(from var(--primary) l c h / 0.2));
   z-index: -1;
 }
 

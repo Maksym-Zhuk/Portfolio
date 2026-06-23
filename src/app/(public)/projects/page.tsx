@@ -5,6 +5,7 @@ import { organizations, customProjects, projectImages } from '@/db/schema';
 import { asc } from 'drizzle-orm';
 import Link from 'next/link';
 import ReposSection from './ReposSection';
+import SectionHeading from '@/components/shared/SectionHeading';
 
 export default async function Projects() {
   const [orgs, customProjs, imgRows] = await Promise.all([
@@ -21,12 +22,7 @@ export default async function Projects() {
       className="w-full min-h-[100dvh] flex flex-col gap-10 py-10 px-3 sm:px-10 xl:px-20"
     >
       {/* Page header */}
-      <div className="flex flex-col gap-3">
-        <span className="text-primary font-mono text-sm tracking-widest uppercase">
-          Open Source
-        </span>
-        <h1 className="text-3xl font-bold">Projects</h1>
-      </div>
+      <SectionHeading as="h1" path="projects" title="Projects" />
 
       {/* Featured organizations */}
       {orgs.length > 0 && (

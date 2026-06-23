@@ -24,7 +24,7 @@ export default function ProjectCard({
   return (
     <article
       aria-label={`Project: ${name}`}
-      className="w-full flex flex-col lg:flex-row items-start gap-8 border border-border rounded-xl p-6 bg-card hover:border-primary/40 transition-all duration-200 group"
+      className="w-full flex flex-col lg:flex-row items-start gap-8 border border-border rounded-xl p-6 bg-card hover:border-primary/50 hover:glow-primary-sm transition-all duration-200 group"
     >
       {/* Image — desktop */}
       {imageUrl ? (

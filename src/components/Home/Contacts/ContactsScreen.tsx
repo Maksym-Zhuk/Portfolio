@@ -1,6 +1,7 @@
 import type { Contact } from '@/db/schema';
 import Image from 'next/image';
 import Link from 'next/link';
+import SectionHeading from '@/components/shared/SectionHeading';
 
 interface Props {
   contacts: Contact[];
@@ -13,12 +14,7 @@ export default function ContactsScreen({ contacts }: Props) {
       aria-label="Contact links"
       className="w-full flex flex-col justify-center gap-10 scroll-mt-28 py-24"
     >
-      <div className="flex flex-col gap-3">
-        <span className="text-primary font-mono text-sm tracking-widest uppercase">
-          Reach out
-        </span>
-        <h2 className="text-4xl font-bold">Contacts</h2>
-      </div>
+      <SectionHeading path="contacts" title="Contacts" />
 
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
         {contacts.map((item: Contact) => (

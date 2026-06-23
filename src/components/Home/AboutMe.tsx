@@ -4,18 +4,19 @@ import { CodeEditor } from '@/components/animate-ui/components/code-editor';
 import { CopyButton } from '@/components/animate-ui/buttons/copy';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useReducedMotion } from 'motion/react';
 import { cn } from '@/lib/utils';
 
 type Lang = 'rust' | 'tsx' | 'nest';
 
 const TABS: { lang: Lang; filename: string; icon: string; alt: string }[] = [
-  { lang: 'rust', filename: 'about_me.rs', icon: '/Rust.svg', alt: 'Rust' },
   {
     lang: 'nest',
     filename: 'developer.controller.ts',
     icon: '/Nest.js.svg',
     alt: 'NestJS',
   },
+  { lang: 'rust', filename: 'about_me.rs', icon: '/Rust.svg', alt: 'Rust' },
   {
     lang: 'tsx',
     filename: 'AboutMe.tsx',
@@ -43,7 +44,8 @@ interface Props {
 }
 
 export default function AboutMe({ rustCode, tsCode, nestCode }: Props) {
-  const [lang, setLang] = useState<Lang>('rust');
+  const [lang, setLang] = useState<Lang>('nest');
+  const prefersReducedMotion = useReducedMotion();
   const CODE: Record<Lang, string> = {
     rust: rustCode,
     tsx: tsCode,
@@ -81,7 +83,7 @@ export default function AboutMe({ rustCode, tsCode, nestCode }: Props) {
                   : 'text-muted-foreground hover:text-foreground hover:bg-background/[0.04]',
               )}
             >
-              {/* active tab indicator — orange top line */}
+              {/* active tab indicator — green top line */}
               {active && (
                 <span
                   className="absolute top-0 left-0 right-0 h-[2px] bg-primary rounded-b-sm"
@@ -119,7 +121,8 @@ export default function AboutMe({ rustCode, tsCode, nestCode }: Props) {
       <CodeEditor
         key={lang}
         customHeader={tabHeader}
-        cursor
+        cursor={!prefersReducedMotion}
+        writing={!prefersReducedMotion}
         className="xl:min-w-[600px] lg:w-[490px] md:w-4/5 w-full lg:h-[580px] sm:h-[500px] min-[400px]:h-[600px] h-[650px]"
         lang={SHIKI_LANG[lang]}
         duration={DURATION[lang]}

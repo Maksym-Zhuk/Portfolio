@@ -27,6 +27,11 @@ export default async function Home() {
       id="main-content"
       className="w-full flex flex-col px-3 sm:px-10 xl:px-20"
     >
+      <h1 className="sr-only">
+        Maksym Zhuk — Backend Engineer, Rust developer, and lead developer at
+        Oxide
+      </h1>
+
       {/* Hero */}
       <div className="w-full min-h-[92dvh] flex lg:flex-row flex-col justify-between gap-10 lg:mt-0 mt-10">
         <AboutMe

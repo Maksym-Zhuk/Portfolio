@@ -33,7 +33,9 @@ export default function ReposSection({ imageMap, customProjects }: Props) {
       {/* Custom (non-GitHub) projects */}
       {customProjects.length > 0 && (
         <section aria-label="Custom projects" className="flex flex-col gap-6">
-          <h2 className="text-xl font-bold font-mono text-muted-foreground">/ custom</h2>
+          <h2 className="text-xl font-bold font-mono text-muted-foreground">
+            / custom
+          </h2>
           <div className="flex flex-col gap-6">
             {customProjects.map((p) => (
               <ProjectCard
