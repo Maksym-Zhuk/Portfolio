@@ -32,7 +32,6 @@ export default function SkillsScreen({ skills }: Props) {
         <h2 className="text-3xl font-bold">Skills</h2>
       </div>
 
-      {/* Category tabs */}
       <div
         role="tablist"
         aria-label="Filter skills by category"
@@ -56,7 +55,6 @@ export default function SkillsScreen({ skills }: Props) {
         ))}
       </div>
 
-      {/* Skills grid */}
       <div
         id="skills-grid"
         role="tabpanel"

@@ -162,7 +162,6 @@ export default function SkillsView({ skills }: Props) {
 
   return (
     <div className="flex flex-col gap-12">
-      {/* Page header + mode toggle */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
         <SectionHeading
           as="h1"
@@ -171,7 +170,6 @@ export default function SkillsView({ skills }: Props) {
           meta={`${skills.length} technologies`}
         />
 
-        {/* View toggle */}
         <div
           role="group"
           aria-label="Skills display mode"
@@ -197,7 +195,6 @@ export default function SkillsView({ skills }: Props) {
         </div>
       </div>
 
-      {/* Views */}
       {mode === 'category' ? (
         <div className="flex flex-col gap-16">
           {grouped.map(({ category, label, skills }) => (

@@ -7,7 +7,6 @@ import { sessionOptions } from '@/lib/session';
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Allow login page through
   if (pathname === '/admin/login') {
     return NextResponse.next();
   }

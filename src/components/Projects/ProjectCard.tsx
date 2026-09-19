@@ -26,7 +26,6 @@ export default function ProjectCard({
       aria-label={`Project: ${name}`}
       className="w-full flex flex-col lg:flex-row items-start gap-8 border border-border rounded-xl p-6 bg-card hover:border-primary/50 hover:glow-primary-sm transition-all duration-200 group"
     >
-      {/* Image — desktop */}
       {imageUrl ? (
         <div className="hidden lg:block shrink-0 w-64 xl:w-80 overflow-hidden rounded-lg border border-border">
           <Image
@@ -43,7 +42,6 @@ export default function ProjectCard({
         </div>
       )}
 
-      {/* Image — mobile */}
       {imageUrl ? (
         <div className="w-full lg:hidden overflow-hidden rounded-lg border border-border">
           <AspectRatio ratio={16 / 9}>
@@ -65,7 +63,6 @@ export default function ProjectCard({
         </div>
       )}
 
-      {/* Content */}
       <div className="flex flex-col justify-start gap-4 flex-1 min-w-0">
         <div className="flex flex-wrap items-center gap-3">
           <h2 className="text-xl sm:text-2xl font-bold">{name}</h2>

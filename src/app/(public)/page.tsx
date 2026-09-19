@@ -32,7 +32,6 @@ export default async function Home() {
         Oxide
       </h1>
 
-      {/* Hero */}
       <div className="w-full min-h-[92dvh] flex lg:flex-row flex-col justify-between gap-10 lg:mt-0 mt-10">
         <AboutMe
           rustCode={about?.rustCode ?? DEFAULT_RUST}
@@ -55,7 +54,6 @@ export default async function Home() {
         </div>
       </div>
 
-      {/* Contacts */}
       <ContactsScreen contacts={contactRows} />
     </main>
   );

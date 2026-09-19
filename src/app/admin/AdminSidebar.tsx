@@ -79,7 +79,6 @@ export default function AdminSidebar() {
 
   return (
     <>
-      {/* Mobile top bar */}
       <header className="md:hidden flex items-center justify-between px-4 h-14 border-b border-border bg-card sticky top-0 z-30">
         <span className="font-mono text-sm font-bold text-primary">/ admin</span>
         <button
@@ -91,7 +90,6 @@ export default function AdminSidebar() {
         </button>
       </header>
 
-      {/* Mobile drawer */}
       {mobileOpen && (
         <div className="md:hidden fixed inset-0 z-50">
           <div
@@ -115,7 +113,6 @@ export default function AdminSidebar() {
         </div>
       )}
 
-      {/* Desktop sidebar */}
       <aside className="hidden md:flex w-52 shrink-0 border-r border-border flex-col min-h-dvh bg-card sticky top-0 self-start h-dvh">
         <div className="px-4 py-5 border-b border-border">
           <span className="font-mono text-sm font-bold text-primary">/ admin</span>

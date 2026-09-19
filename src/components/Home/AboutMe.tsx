@@ -55,14 +55,12 @@ export default function AboutMe({ rustCode, tsCode, nestCode }: Props) {
 
   const tabHeader = (
     <div className="bg-muted border-b border-border/75 flex items-stretch h-10 shrink-0">
-      {/* macOS window dots */}
       <div className="flex items-center gap-1.5 px-3 shrink-0">
         <div className="size-2 rounded-full bg-red-500" aria-hidden="true" />
         <div className="size-2 rounded-full bg-yellow-500" aria-hidden="true" />
         <div className="size-2 rounded-full bg-green-500" aria-hidden="true" />
       </div>
 
-      {/* File tabs */}
       <div
         className="flex flex-1 overflow-x-auto scrollbar-none"
         role="tablist"
@@ -83,7 +81,6 @@ export default function AboutMe({ rustCode, tsCode, nestCode }: Props) {
                   : 'text-muted-foreground hover:text-foreground hover:bg-background/[0.04]',
               )}
             >
-              {/* active tab indicator — green top line */}
               {active && (
                 <span
                   className="absolute top-0 left-0 right-0 h-[2px] bg-primary rounded-b-sm"
@@ -104,7 +101,6 @@ export default function AboutMe({ rustCode, tsCode, nestCode }: Props) {
         })}
       </div>
 
-      {/* Copy button */}
       <div className="flex items-center pr-1 shrink-0">
         <CopyButton
           content={code}

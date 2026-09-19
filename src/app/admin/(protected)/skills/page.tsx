@@ -201,7 +201,6 @@ export default function SkillsPage() {
           </DialogHeader>
 
           <form onSubmit={handleSubmit((d) => saveMutation.mutate(d))} className="flex flex-col gap-4 pt-2">
-            {/* Logo */}
             <div className="flex flex-col gap-1.5">
               <Label>Logo</Label>
               <div className="flex items-center gap-3">
@@ -234,14 +233,12 @@ export default function SkillsPage() {
               {errors.logoUrl && <p className="text-xs text-destructive">{errors.logoUrl.message}</p>}
             </div>
 
-            {/* Title */}
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="title">Title</Label>
               <Input id="title" {...register('title')} />
               {errors.title && <p className="text-xs text-destructive">{errors.title.message}</p>}
             </div>
 
-            {/* Category */}
             <div className="flex flex-col gap-1.5">
               <Label>Category</Label>
               <Select value={category} onValueChange={(v) => setValue('category', v as typeof CATEGORIES[number], { shouldDirty: true })}>
@@ -252,28 +249,24 @@ export default function SkillsPage() {
               </Select>
             </div>
 
-            {/* First tried */}
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="firstTried">First tried (YYYY-MM-DD)</Label>
               <Input id="firstTried" placeholder="2025-01-15" {...register('firstTried')} className="font-mono" />
               {errors.firstTried && <p className="text-xs text-destructive">{errors.firstTried.message}</p>}
             </div>
 
-            {/* Description */}
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="description">Description</Label>
               <Textarea id="description" rows={4} {...register('description')} />
               {errors.description && <p className="text-xs text-destructive">{errors.description.message}</p>}
             </div>
 
-            {/* Docs URL */}
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="docsUrl">Docs URL</Label>
               <Input id="docsUrl" type="url" {...register('docsUrl')} className="font-mono text-xs" />
               {errors.docsUrl && <p className="text-xs text-destructive">{errors.docsUrl.message}</p>}
             </div>
 
-            {/* Sort order */}
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="sortOrder">Sort order</Label>
               <Input id="sortOrder" type="number" {...register('sortOrder', { valueAsNumber: true })} className="font-mono w-24" />

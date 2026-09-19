@@ -18,8 +18,6 @@ import { Pencil, Trash2 } from 'lucide-react';
 import { ConfirmButton } from '@/components/admin/ConfirmButton';
 import type { Organization, GithubOrg } from '@/db/schema';
 
-// ── Featured Orgs schema ──────────────────────────────────────────────────────
-
 const orgSchema = z.object({
   name: z.string().min(1, 'Name required'),
   slug: z.string().min(1, 'Slug required'),
@@ -33,12 +31,10 @@ const orgSchema = z.object({
   releasesCount: z.number().int().min(0).optional().nullable(),
   license: z.string().optional().nullable(),
   status: z.string().optional().nullable(),
-  tags: z.string().optional(), // comma-separated in form
+  tags: z.string().optional(),
   sortOrder: z.number().int(),
 });
 type OrgFormData = z.infer<typeof orgSchema>;
-
-// ── GitHub Orgs schema ────────────────────────────────────────────────────────
 
 const githubOrgSchema = z.object({
   orgLogin: z.string().min(1, 'Org login required'),
@@ -46,8 +42,6 @@ const githubOrgSchema = z.object({
   enabled: z.boolean(),
 });
 type GithubOrgFormData = z.infer<typeof githubOrgSchema>;
-
-// ── Fetch helpers ─────────────────────────────────────────────────────────────
 
 async function fetchOrgs(): Promise<Organization[]> {
   const res = await fetch('/api/admin/organizations');
@@ -60,8 +54,6 @@ async function fetchGithubOrgs(): Promise<GithubOrg[]> {
   if (!res.ok) throw new Error('Failed');
   return res.json();
 }
-
-// ── Component ─────────────────────────────────────────────────────────────────
 
 export default function OrganizationsPage() {
   const qc = useQueryClient();
@@ -159,7 +151,6 @@ export default function OrganizationsPage() {
         <p className="text-sm text-muted-foreground mt-1">Featured org cards and GitHub organizations to pull repos from.</p>
       </div>
 
-      {/* ── Featured orgs ──────────────────────────────────────────────────── */}
       <section className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold font-mono">Featured organizations</h2>
@@ -211,7 +202,6 @@ export default function OrganizationsPage() {
 
       <Separator />
 
-      {/* ── GitHub orgs ────────────────────────────────────────────────────── */}
       <section className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <div>
@@ -269,7 +259,6 @@ export default function OrganizationsPage() {
         )}
       </section>
 
-      {/* ── Featured org dialog ───────────────────────────────────────────────── */}
       <Dialog open={orgOpen} onOpenChange={setOrgOpen}>
         <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle className="font-mono">{editingOrg ? 'Edit organization' : 'Add organization'}</DialogTitle></DialogHeader>
@@ -318,7 +307,6 @@ export default function OrganizationsPage() {
         </DialogContent>
       </Dialog>
 
-      {/* ── GitHub org dialog ─────────────────────────────────────────────────── */}
       <Dialog open={githubOrgOpen} onOpenChange={setGithubOrgOpen}>
         <DialogContent className="max-w-sm">
           <DialogHeader><DialogTitle className="font-mono">Add GitHub organization</DialogTitle></DialogHeader>

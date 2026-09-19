@@ -21,10 +21,8 @@ export default async function Projects() {
       id="main-content"
       className="w-full min-h-[100dvh] flex flex-col gap-10 py-10 px-3 sm:px-10 xl:px-20"
     >
-      {/* Page header */}
       <SectionHeading as="h1" path="projects" title="Projects" />
 
-      {/* Featured organizations */}
       {orgs.length > 0 && (
         <section aria-label="Featured organizations" className="flex flex-col gap-4">
           {orgs.map((org) => (
@@ -84,7 +82,6 @@ export default async function Projects() {
         </section>
       )}
 
-      {/* GitHub repos + custom projects (client component — uses React Query) */}
       <ReposSection imageMap={imageMap} customProjects={customProjs} />
     </main>
   );

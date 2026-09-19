@@ -1,7 +1,6 @@
 import { Skill } from '@/types/skills';
 
 export const Skills: Skill[] = [
-  // ── Languages ─────────────────────────────────────────────
   {
     logo: '/Rust.svg',
     title: 'Rust',
@@ -30,7 +29,6 @@ export const Skills: Skill[] = [
     docsUrl: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
   },
 
-  // ── Backend ───────────────────────────────────────────────
   {
     logo: '/Nest.js.svg',
     title: 'Nest.js',
@@ -104,7 +102,6 @@ export const Skills: Skill[] = [
     docsUrl: 'https://core.telegram.org/bots/api',
   },
 
-  // ── Database ──────────────────────────────────────────────
   {
     logo: '/PostgresSQL.svg',
     title: 'PostgresSQL',
@@ -133,7 +130,6 @@ export const Skills: Skill[] = [
     docsUrl: 'https://redis.io/docs/',
   },
 
-  // ── Full Stack ────────────────────────────────────────────
   {
     logo: '/Next.js.svg',
     title: 'Next.js',
@@ -171,7 +167,6 @@ export const Skills: Skill[] = [
     docsUrl: 'https://www.rabbitmq.com/docs',
   },
 
-  // ── DevOps & Tools ────────────────────────────────────────
   {
     logo: '/Docker.svg',
     title: 'Docker',
@@ -236,7 +231,6 @@ export const Skills: Skill[] = [
     docsUrl: 'https://swagger.io/docs/',
   },
 
-  // ── Frontend ──────────────────────────────────────────────
   {
     logo: '/React.svg',
     title: 'React',

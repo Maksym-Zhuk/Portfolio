@@ -19,7 +19,6 @@ export default function Header() {
       }`}
     >
       <div className="w-full bg-card border border-border rounded-2xl flex justify-between items-center px-4 h-14">
-        {/* Logo + full name → home */}
         <Link
           href="/"
           aria-label="Go to home page"
@@ -40,10 +39,8 @@ export default function Header() {
           </span>
         </Link>
 
-        {/* Desktop nav */}
         <Nav />
 
-        {/* Mobile hamburger */}
         <FullScreenNav isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
     </header>

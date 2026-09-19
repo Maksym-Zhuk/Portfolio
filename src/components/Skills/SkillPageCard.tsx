@@ -50,7 +50,6 @@ function useExperience(firstTried: string) {
 
 interface Props {
   data: Skill;
-  /** Compact chip variant used in the timeline view */
   compact?: boolean;
 }
 
@@ -60,7 +59,6 @@ export default function SkillPageCard({ data, compact = false }: Props) {
 
   return (
     <>
-      {/* ── Trigger ─────────────────────────────────────── */}
       <button
         onClick={() => setOpen(true)}
         aria-label={`${data.title} — click for details`}
@@ -97,7 +95,6 @@ export default function SkillPageCard({ data, compact = false }: Props) {
         </div>
       </button>
 
-      {/* ── Detail dialog ────────────────────────────────── */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="border-border bg-card max-w-md">
           <DialogHeader>
@@ -125,12 +122,10 @@ export default function SkillPageCard({ data, compact = false }: Props) {
             </DialogTitle>
           </DialogHeader>
 
-          {/* Description */}
           <p className="text-sm text-muted-foreground leading-relaxed">
             {data.description}
           </p>
 
-          {/* Stats */}
           <div className="grid grid-cols-2 gap-3 font-mono text-sm">
             <div className="flex flex-col gap-1 p-3 rounded-lg bg-secondary border border-border">
               <span className="text-[10px] tracking-widest uppercase text-muted-foreground">
@@ -148,7 +143,6 @@ export default function SkillPageCard({ data, compact = false }: Props) {
             </div>
           </div>
 
-          {/* Docs link */}
           <Link
             href={data.docsUrl}
             target="_blank"

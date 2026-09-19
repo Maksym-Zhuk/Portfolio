@@ -13,7 +13,7 @@ export const skills = pgTable('skills', {
   logoUrl: text('logo_url').notNull(),
   title: text('title').notNull(),
   firstTried: date('first_tried').notNull(),
-  category: text('category').notNull(), // Language | Backend | Database | Fullstack | DevOps | Frontend
+  category: text('category').notNull(),
   description: text('description').notNull(),
   docsUrl: text('docs_url').notNull(),
   sortOrder: integer('sort_order').notNull().default(0),
@@ -36,7 +36,7 @@ export const organizations = pgTable('organizations', {
   description: text('description').notNull().default(''),
   githubUrl: text('github_url').notNull(),
   websiteUrl: text('website_url'),
-  roleBadge: text('role_badge'), // e.g. "Lead Developer"
+  roleBadge: text('role_badge'),
   version: text('version'),
   languageName: text('language_name'),
   languagePct: integer('language_pct'),
@@ -73,7 +73,6 @@ export const projectImages = pgTable('project_images', {
   imageUrl: text('image_url').notNull(),
 });
 
-// Type exports for use in components
 export type AboutMe = typeof aboutMe.$inferSelect;
 export type Skill = typeof skills.$inferSelect;
 export type Contact = typeof contacts.$inferSelect;

@@ -8,14 +8,12 @@ export async function GET() {
     headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
   }
 
-  // Fetch personal repos
   const personalRes = await fetch('https://api.github.com/users/Maksym-Zhuk/repos', { headers });
   if (!personalRes.ok) {
     return new Response('GitHub API error', { status: 500 });
   }
   const personalRepos = await personalRes.json();
 
-  // Fetch repos from enabled GitHub orgs
   let orgRepos: unknown[] = [];
   try {
     const enabledOrgs = await db.select().from(githubOrgs).where(eq(githubOrgs.enabled, true));
@@ -27,11 +25,9 @@ export async function GET() {
     const results = await Promise.all(orgFetches);
     orgRepos = results.flat();
   } catch {
-    // DB not configured yet — fall back gracefully
     orgRepos = [];
   }
 
-  // Merge, deduplicate by id, filter out null descriptions
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const all = [...personalRepos, ...orgRepos] as any[];
   const seen = new Set<number>();

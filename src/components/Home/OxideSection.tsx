@@ -22,7 +22,6 @@ export default function OxideSection() {
         className="group block"
       >
         <div className="relative border border-border rounded-xl p-6 sm:p-8 bg-card transition-all duration-300 hover:border-primary/50 hover:glow-primary-sm overflow-hidden">
-          {/* Decorative corner accent */}
           <div
             className="absolute top-0 right-0 w-32 h-32 opacity-10 pointer-events-none"
             aria-hidden="true"
@@ -31,7 +30,6 @@ export default function OxideSection() {
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-start gap-6">
-            {/* Logo mark */}
             <div
               className="shrink-0 w-14 h-14 rounded-lg border border-primary/40 flex items-center justify-center bg-primary/10 group-hover:bg-primary/20 transition-colors"
               aria-hidden="true"
@@ -110,7 +108,6 @@ export default function OxideSection() {
               </div>
             </div>
 
-            {/* Arrow */}
             <div
               className="hidden sm:flex items-center self-center text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-200"
               aria-hidden="true"

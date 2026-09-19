@@ -16,22 +16,18 @@ import { Pencil, Trash2 } from 'lucide-react';
 import { ConfirmButton } from '@/components/admin/ConfirmButton';
 import type { ProjectImage, CustomProject } from '@/db/schema';
 
-// ── Project Images ────────────────────────────────────────────────────────────
-
 const imgSchema = z.object({
   repoName: z.string().min(1, 'Repo name required'),
   imageUrl: z.string().min(1, 'Image URL required'),
 });
 type ImgFormData = z.infer<typeof imgSchema>;
 
-// ── Custom Projects ───────────────────────────────────────────────────────────
-
 const projSchema = z.object({
   name: z.string().min(1, 'Name required'),
   description: z.string(),
   githubUrl: z.string().url().optional().or(z.literal('')).nullable(),
   homepageUrl: z.string().url().optional().or(z.literal('')).nullable(),
-  topics: z.string().optional(), // comma-separated in the form
+  topics: z.string().optional(),
   language: z.string().optional().nullable(),
   imageUrl: z.string().optional().nullable(),
   sortOrder: z.number().int(),
@@ -50,21 +46,17 @@ async function fetchProjects(): Promise<CustomProject[]> {
   return res.json();
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
-
 export default function ProjectsPage() {
   const qc = useQueryClient();
   const { data: images = [], isLoading: loadingImages } = useQuery({ queryKey: ['admin-proj-images'], queryFn: fetchImages });
   const { data: projects = [], isLoading: loadingProjects } = useQuery({ queryKey: ['admin-custom-projects'], queryFn: fetchProjects });
 
-  // Image mapping state
   const [imgOpen, setImgOpen] = useState(false);
   const [uploadingImg, setUploadingImg] = useState(false);
   const imgFileRef = useRef<HTMLInputElement>(null);
 
   const imgForm = useForm<ImgFormData>({ resolver: zodResolver(imgSchema), defaultValues: { repoName: '', imageUrl: '' } });
 
-  // Custom project state
   const [projOpen, setProjOpen] = useState(false);
   const [editingProj, setEditingProj] = useState<CustomProject | null>(null);
   const [uploadingProj, setUploadingProj] = useState(false);
@@ -158,7 +150,6 @@ export default function ProjectsPage() {
         <p className="text-sm text-muted-foreground mt-1">Manage project screenshots and custom projects.</p>
       </div>
 
-      {/* ── Project Images ──────────────────────────────────────────────────── */}
       <section className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold font-mono">GitHub repo screenshots</h2>
@@ -208,7 +199,6 @@ export default function ProjectsPage() {
 
       <Separator />
 
-      {/* ── Custom Projects ─────────────────────────────────────────────────── */}
       <section className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold font-mono">Custom projects</h2>
@@ -265,7 +255,6 @@ export default function ProjectsPage() {
         )}
       </section>
 
-      {/* ── Image mapping dialog ──────────────────────────────────────────────── */}
       <Dialog open={imgOpen} onOpenChange={setImgOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader><DialogTitle className="font-mono">Add / update screenshot</DialogTitle></DialogHeader>
@@ -296,7 +285,6 @@ export default function ProjectsPage() {
         </DialogContent>
       </Dialog>
 
-      {/* ── Custom project dialog ─────────────────────────────────────────────── */}
       <Dialog open={projOpen} onOpenChange={setProjOpen}>
         <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle className="font-mono">{editingProj ? 'Edit project' : 'Add project'}</DialogTitle></DialogHeader>

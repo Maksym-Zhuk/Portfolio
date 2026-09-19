@@ -30,7 +30,6 @@ export default function ReposSection({ imageMap, customProjects }: Props) {
 
   return (
     <>
-      {/* Custom (non-GitHub) projects */}
       {customProjects.length > 0 && (
         <section aria-label="Custom projects" className="flex flex-col gap-6">
           <h2 className="text-xl font-bold font-mono text-muted-foreground">
@@ -53,7 +52,6 @@ export default function ReposSection({ imageMap, customProjects }: Props) {
         </section>
       )}
 
-      {/* GitHub repos */}
       <section aria-label="GitHub repositories">
         <h2 className="text-xl font-bold mb-6 font-mono text-muted-foreground">
           / repositories
