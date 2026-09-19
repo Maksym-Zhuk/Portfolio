@@ -3,8 +3,8 @@
 import { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { typeboxResolver } from '@hookform/resolvers/typebox';
+import { Type, type Static } from '@sinclair/typebox';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,14 +15,14 @@ import { ConfirmButton } from '@/components/admin/ConfirmButton';
 import Image from 'next/image';
 import type { Contact } from '@/db/schema';
 
-const schema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  iconUrl: z.string().min(1, 'Icon is required'),
-  link: z.string().url('Must be a valid URL'),
-  handle: z.string().optional().nullable(),
-  sortOrder: z.number().int(),
+const schema = Type.Object({
+  title: Type.String({ minLength: 1 }),
+  iconUrl: Type.String({ minLength: 1 }),
+  link: Type.String({ format: 'uri' }),
+  handle: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  sortOrder: Type.Integer(),
 });
-type FormData = z.infer<typeof schema>;
+type FormData = Static<typeof schema>;
 
 async function fetchContacts(): Promise<Contact[]> {
   const res = await fetch('/api/admin/contacts');
@@ -39,7 +39,7 @@ export default function ContactsPage() {
   const fileRef = useRef<HTMLInputElement>(null);
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors, isSubmitting } } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: typeboxResolver(schema),
     defaultValues: { title: '', iconUrl: '', link: '', handle: '', sortOrder: 0 },
   });
 

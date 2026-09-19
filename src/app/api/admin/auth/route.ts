@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { Type } from '@sinclair/typebox';
 import { getSession } from '@/lib/session';
 import { verifyPassword } from '@/lib/auth';
+import { safeParse } from '@/lib/validate';
 
-const loginSchema = z.object({
-  password: z.string().min(1),
+const loginSchema = Type.Object({
+  password: Type.String({ minLength: 1 }),
 });
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
-  const parsed = loginSchema.safeParse(body);
+  const parsed = safeParse(loginSchema, body);
   if (!parsed.success) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }

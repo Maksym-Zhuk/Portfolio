@@ -1,10 +1,10 @@
 export const dynamic = 'force-dynamic';
 
 import { db } from '@/db';
-import { aboutMe, skills, contacts, organizations, githubOrgs, customProjects, projectImages } from '@/db/schema';
+import { skills, contacts, organizations, githubOrgs, customProjects, projectImages } from '@/db/schema';
 import { sql } from 'drizzle-orm';
 import Link from 'next/link';
-import { Wrench, AtSign, Building2, Github, FolderGit2, ImageIcon } from 'lucide-react';
+import { ADMIN_DASHBOARD_CARDS } from '@/constants/adminDashboardCards';
 
 async function getCounts() {
   const [s, c, o, go, cp, pi] = await Promise.all([
@@ -25,15 +25,6 @@ async function getCounts() {
   };
 }
 
-const CARDS = [
-  { label: 'Skills', key: 'skills' as const, href: '/admin/skills', icon: Wrench },
-  { label: 'Contacts', key: 'contacts' as const, href: '/admin/contacts', icon: AtSign },
-  { label: 'Feat. Orgs', key: 'organizations' as const, href: '/admin/organizations', icon: Building2 },
-  { label: 'GitHub Orgs', key: 'githubOrgs' as const, href: '/admin/organizations', icon: Github },
-  { label: 'Custom Projects', key: 'customProjects' as const, href: '/admin/projects', icon: FolderGit2 },
-  { label: 'Project Images', key: 'projectImages' as const, href: '/admin/projects', icon: ImageIcon },
-];
-
 export default async function AdminDashboard() {
   const counts = await getCounts();
 
@@ -45,7 +36,7 @@ export default async function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        {CARDS.map(({ label, key, href, icon: Icon }) => (
+        {ADMIN_DASHBOARD_CARDS.map(({ label, key, href, icon: Icon }) => (
           <Link
             key={key}
             href={href}

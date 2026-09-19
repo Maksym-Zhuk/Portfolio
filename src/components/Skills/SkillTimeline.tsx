@@ -1,22 +1,6 @@
-import { Skill } from '@/types/skills';
+import { Skill, MonthGroup, YearGroup } from '@/types/skills';
 import SkillPageCard from './SkillPageCard';
-
-const MONTHS = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-];
-
-interface MonthGroup {
-  month: number;
-  label: string;
-  skills: Skill[];
-}
-
-interface YearGroup {
-  year: number;
-  months: MonthGroup[];
-  total: number;
-}
+import { MONTHS } from '@/constants/months';
 
 function buildTimeline(skills: Skill[]): YearGroup[] {
   const sorted = [...skills].sort(

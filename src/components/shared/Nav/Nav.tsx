@@ -1,14 +1,10 @@
 'use client';
 
 import type { IMenu } from '@/types/menu';
-import { Menu } from '@/constants/menu';
+import { Menu, SECTION_IDS } from '@/constants/menu';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useActiveSection } from '@/hooks/useActiveSection';
-
-const SECTION_IDS = Menu.filter((item) => item.link.startsWith('/#')).map(
-  (item) => item.link.slice(2),
-);
 
 export default function Nav() {
   const pathname = usePathname();

@@ -1,26 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { Type } from '@sinclair/typebox';
 import { db } from '@/db';
 import { organizations } from '@/db/schema';
 import { asc } from 'drizzle-orm';
 import { requireAdmin } from '@/lib/adminGuard';
+import { safeParse } from '@/lib/validate';
 
-const schema = z.object({
-  name: z.string().min(1),
-  slug: z.string().min(1),
-  logoUrl: z.string().optional().nullable(),
-  description: z.string().default(''),
-  githubUrl: z.string().url(),
-  websiteUrl: z.string().url().optional().nullable(),
-  roleBadge: z.string().optional().nullable(),
-  version: z.string().optional().nullable(),
-  languageName: z.string().optional().nullable(),
-  languagePct: z.number().int().min(0).max(100).optional().nullable(),
-  releasesCount: z.number().int().min(0).optional().nullable(),
-  license: z.string().optional().nullable(),
-  status: z.string().optional().nullable(),
-  tags: z.array(z.string()).optional().nullable(),
-  sortOrder: z.number().int().default(0),
+const schema = Type.Object({
+  name: Type.String({ minLength: 1 }),
+  slug: Type.String({ minLength: 1 }),
+  logoUrl: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  description: Type.String({ default: '' }),
+  githubUrl: Type.String({ format: 'uri' }),
+  websiteUrl: Type.Optional(Type.Union([Type.String({ format: 'uri' }), Type.Null()])),
+  roleBadge: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  version: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  languageName: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  languagePct: Type.Optional(Type.Union([Type.Integer({ minimum: 0, maximum: 100 }), Type.Null()])),
+  releasesCount: Type.Optional(Type.Union([Type.Integer({ minimum: 0 }), Type.Null()])),
+  license: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  status: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  tags: Type.Optional(Type.Union([Type.Array(Type.String()), Type.Null()])),
+  sortOrder: Type.Integer({ default: 0 }),
 });
 
 export async function GET() {
@@ -36,7 +37,7 @@ export async function POST(req: NextRequest) {
   if (guard) return guard;
 
   const body = await req.json().catch(() => null);
-  const parsed = schema.safeParse(body);
+  const parsed = safeParse(schema, body);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }

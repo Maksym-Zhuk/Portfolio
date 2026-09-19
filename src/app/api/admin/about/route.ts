@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { Type } from '@sinclair/typebox';
 import { db } from '@/db';
 import { aboutMe } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { requireAdmin } from '@/lib/adminGuard';
+import { safeParse } from '@/lib/validate';
 
-const schema = z.object({
-  rustCode: z.string(),
-  tsCode: z.string(),
-  nestCode: z.string(),
-  hrSummary: z.string(),
+const schema = Type.Object({
+  rustCode: Type.String(),
+  tsCode: Type.String(),
+  nestCode: Type.String(),
+  hrSummary: Type.String(),
 });
 
 export async function GET() {
@@ -25,7 +26,7 @@ export async function PUT(req: NextRequest) {
   if (guard) return guard;
 
   const body = await req.json().catch(() => null);
-  const parsed = schema.safeParse(body);
+  const parsed = safeParse(schema, body);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }

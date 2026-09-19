@@ -3,8 +3,8 @@
 import { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { typeboxResolver } from '@hookform/resolvers/typebox';
+import { Type, type Static } from '@sinclair/typebox';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,23 +16,23 @@ import { Pencil, Trash2 } from 'lucide-react';
 import { ConfirmButton } from '@/components/admin/ConfirmButton';
 import type { ProjectImage, CustomProject } from '@/db/schema';
 
-const imgSchema = z.object({
-  repoName: z.string().min(1, 'Repo name required'),
-  imageUrl: z.string().min(1, 'Image URL required'),
+const imgSchema = Type.Object({
+  repoName: Type.String({ minLength: 1 }),
+  imageUrl: Type.String({ minLength: 1 }),
 });
-type ImgFormData = z.infer<typeof imgSchema>;
+type ImgFormData = Static<typeof imgSchema>;
 
-const projSchema = z.object({
-  name: z.string().min(1, 'Name required'),
-  description: z.string(),
-  githubUrl: z.string().url().optional().or(z.literal('')).nullable(),
-  homepageUrl: z.string().url().optional().or(z.literal('')).nullable(),
-  topics: z.string().optional(),
-  language: z.string().optional().nullable(),
-  imageUrl: z.string().optional().nullable(),
-  sortOrder: z.number().int(),
+const projSchema = Type.Object({
+  name: Type.String({ minLength: 1 }),
+  description: Type.String(),
+  githubUrl: Type.Optional(Type.Union([Type.String({ format: 'uri' }), Type.Literal(''), Type.Null()])),
+  homepageUrl: Type.Optional(Type.Union([Type.String({ format: 'uri' }), Type.Literal(''), Type.Null()])),
+  topics: Type.Optional(Type.String()),
+  language: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  imageUrl: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  sortOrder: Type.Integer(),
 });
-type ProjFormData = z.infer<typeof projSchema>;
+type ProjFormData = Static<typeof projSchema>;
 
 async function fetchImages(): Promise<ProjectImage[]> {
   const res = await fetch('/api/admin/project-images');
@@ -55,14 +55,14 @@ export default function ProjectsPage() {
   const [uploadingImg, setUploadingImg] = useState(false);
   const imgFileRef = useRef<HTMLInputElement>(null);
 
-  const imgForm = useForm<ImgFormData>({ resolver: zodResolver(imgSchema), defaultValues: { repoName: '', imageUrl: '' } });
+  const imgForm = useForm<ImgFormData>({ resolver: typeboxResolver(imgSchema), defaultValues: { repoName: '', imageUrl: '' } });
 
   const [projOpen, setProjOpen] = useState(false);
   const [editingProj, setEditingProj] = useState<CustomProject | null>(null);
   const [uploadingProj, setUploadingProj] = useState(false);
   const projFileRef = useRef<HTMLInputElement>(null);
 
-  const projForm = useForm<ProjFormData>({ resolver: zodResolver(projSchema), defaultValues: { name: '', description: '', githubUrl: '', homepageUrl: '', topics: '', language: '', imageUrl: '', sortOrder: 0 } });
+  const projForm = useForm<ProjFormData>({ resolver: typeboxResolver(projSchema), defaultValues: { name: '', description: '', githubUrl: '', homepageUrl: '', topics: '', language: '', imageUrl: '', sortOrder: 0 } });
 
   async function uploadFile(ref: React.RefObject<HTMLInputElement | null>, setLoading: (v: boolean) => void, onUrl: (url: string) => void) {
     const file = ref.current?.files?.[0];

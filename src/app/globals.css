@@ -47,9 +47,7 @@
   --radius: 0.5rem;
   --grid-line: oklch(0 0 0 / 0.05);
 
-  /* Paper, not pure white. Card sits a touch lighter than background so
-     surfaces visibly separate, with a faint green tint (hue 156) matching
-     the dark theme's undertone. */
+
   --background: oklch(0.98 0.003 156);
   --foreground: oklch(0.16 0.01 156);
   --card: oklch(1 0 0);
@@ -57,8 +55,7 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.16 0.01 156);
 
-  /* Same hue as the dark theme's signal green, darkened for AA contrast on
-     white surfaces. */
+
   --primary: oklch(0.5 0.15 153);
   --primary-foreground: oklch(0.98 0.01 156);
 
@@ -94,9 +91,6 @@
 .dark {
   --grid-line: oklch(1 0 0 / 0.022);
 
-  /* Neutrals: graphite, not pure black. Each layer steps ~0.06 in lightness so
-     surfaces visibly separate ("no black-on-black"), with a faint green tint
-     (chroma ≤0.01 toward hue 156) so the dark never reads as dead black. */
   --background: oklch(0.11 0.004 156);
   --foreground: oklch(0.93 0 0);
   --card: oklch(0.17 0.006 156);
@@ -104,19 +98,14 @@
   --popover: oklch(0.17 0.006 156);
   --popover-foreground: oklch(0.93 0 0);
 
-  /* Signal green, calmed: chroma 0.19 → 0.13 so it reads refined, not neon.
-     Still ~9:1 on dark surfaces and as button text. */
   --primary: oklch(0.76 0.13 153);
   --primary-foreground: oklch(0.13 0.01 156);
 
   --secondary: oklch(0.235 0.008 156);
   --secondary-foreground: oklch(0.88 0 0);
   --muted: oklch(0.205 0.006 156);
-  /* Muted body copy clears WCAG AA (≥4.5:1) on every surface. */
   --muted-foreground: oklch(0.66 0.012 156);
 
-  /* Accent is a neutral hover surface (was the green) so ghost/outline hovers
-     stay quiet — green is reserved for deliberate primary/active states. */
   --accent: oklch(0.235 0.008 156);
   --accent-foreground: oklch(0.93 0 0);
 
@@ -141,7 +130,6 @@
   --sidebar-ring: oklch(0.76 0.13 153);
 }
 
-/* Subtle grid texture — technical / systems aesthetic */
 body {
   background-image:
     linear-gradient(var(--grid-line) 1px, transparent 1px),
@@ -158,14 +146,12 @@ body {
     @apply bg-background text-foreground;
   }
 
-  /* Keyboard focus: visible green ring */
   :focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
   }
 }
 
-/* Skip link for keyboard users */
 .skip-link {
   position: absolute;
   top: -100%;
@@ -182,7 +168,6 @@ body {
   top: 0;
 }
 
-/* Green glow utility — derived from --primary so it tracks the accent */
 .glow-primary {
   box-shadow: 0 0 24px oklch(from var(--primary) l c h / 0.22);
 }
@@ -190,7 +175,6 @@ body {
   box-shadow: 0 0 12px oklch(from var(--primary) l c h / 0.18);
 }
 
-/* Animated gradient border utility */
 .border-gradient {
   border: 1px solid transparent;
   background-clip: padding-box;
@@ -205,7 +189,6 @@ body {
   z-index: -1;
 }
 
-/* Hide scrollbar while keeping scroll functionality */
 .scrollbar-none {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -214,7 +197,6 @@ body {
   display: none;
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -3,20 +3,20 @@
 import { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { typeboxResolver } from '@hookform/resolvers/typebox';
+import { Type, type Static } from '@sinclair/typebox';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 
-const schema = z.object({
-  rustCode: z.string(),
-  tsCode: z.string(),
-  nestCode: z.string(),
-  hrSummary: z.string(),
+const schema = Type.Object({
+  rustCode: Type.String(),
+  tsCode: Type.String(),
+  nestCode: Type.String(),
+  hrSummary: Type.String(),
 });
-type FormData = z.infer<typeof schema>;
+type FormData = Static<typeof schema>;
 
 async function fetchAbout(): Promise<FormData> {
   const res = await fetch('/api/admin/about');
@@ -39,7 +39,7 @@ export default function AboutPage() {
   const { data, isLoading } = useQuery({ queryKey: ['admin-about'], queryFn: fetchAbout });
 
   const { register, handleSubmit, reset, formState: { isDirty, isSubmitting } } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: typeboxResolver(schema),
     defaultValues: { rustCode: '', tsCode: '', nestCode: '', hrSummary: '' },
   });
 

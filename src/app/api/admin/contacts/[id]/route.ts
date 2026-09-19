@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { Type } from '@sinclair/typebox';
 import { db } from '@/db';
 import { contacts } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { requireAdmin } from '@/lib/adminGuard';
+import { safeParse } from '@/lib/validate';
 
-const schema = z.object({
-  title: z.string().min(1),
-  iconUrl: z.string().min(1),
-  link: z.string().url(),
-  handle: z.string().optional().nullable(),
-  sortOrder: z.number().int().default(0),
+const schema = Type.Object({
+  title: Type.String({ minLength: 1 }),
+  iconUrl: Type.String({ minLength: 1 }),
+  link: Type.String({ format: 'uri' }),
+  handle: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  sortOrder: Type.Integer({ default: 0 }),
 });
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -19,7 +20,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
   const { id } = await params;
   const body = await req.json().catch(() => null);
-  const parsed = schema.safeParse(body);
+  const parsed = safeParse(schema, body);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }

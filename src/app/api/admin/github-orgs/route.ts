@@ -1,20 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { Type } from '@sinclair/typebox';
 import { db } from '@/db';
 import { githubOrgs } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { requireAdmin } from '@/lib/adminGuard';
+import { safeParse } from '@/lib/validate';
 
-const createSchema = z.object({
-  orgLogin: z.string().min(1),
-  displayName: z.string().min(1),
-  enabled: z.boolean().default(true),
+const createSchema = Type.Object({
+  orgLogin: Type.String({ minLength: 1 }),
+  displayName: Type.String({ minLength: 1 }),
+  enabled: Type.Boolean({ default: true }),
 });
 
-const updateSchema = z.object({
-  orgLogin: z.string().min(1),
-  displayName: z.string().min(1),
-  enabled: z.boolean(),
+const updateSchema = Type.Object({
+  orgLogin: Type.String({ minLength: 1 }),
+  displayName: Type.String({ minLength: 1 }),
+  enabled: Type.Boolean(),
 });
 
 export async function GET() {
@@ -30,7 +31,7 @@ export async function POST(req: NextRequest) {
   if (guard) return guard;
 
   const body = await req.json().catch(() => null);
-  const parsed = createSchema.safeParse(body);
+  const parsed = safeParse(createSchema, body);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }
@@ -48,7 +49,7 @@ export async function PUT(req: NextRequest) {
   if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 });
 
   const body = await req.json().catch(() => null);
-  const parsed = updateSchema.safeParse(body);
+  const parsed = safeParse(updateSchema, body);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }

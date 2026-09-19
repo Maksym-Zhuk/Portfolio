@@ -1,19 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { Type } from '@sinclair/typebox';
 import { db } from '@/db';
 import { customProjects } from '@/db/schema';
 import { asc } from 'drizzle-orm';
 import { requireAdmin } from '@/lib/adminGuard';
+import { safeParse } from '@/lib/validate';
 
-const schema = z.object({
-  name: z.string().min(1),
-  description: z.string().default(''),
-  githubUrl: z.string().url().optional().nullable(),
-  homepageUrl: z.string().url().optional().nullable(),
-  topics: z.array(z.string()).optional().nullable(),
-  language: z.string().optional().nullable(),
-  imageUrl: z.string().optional().nullable(),
-  sortOrder: z.number().int().default(0),
+const schema = Type.Object({
+  name: Type.String({ minLength: 1 }),
+  description: Type.String({ default: '' }),
+  githubUrl: Type.Optional(Type.Union([Type.String({ format: 'uri' }), Type.Null()])),
+  homepageUrl: Type.Optional(Type.Union([Type.String({ format: 'uri' }), Type.Null()])),
+  topics: Type.Optional(Type.Union([Type.Array(Type.String()), Type.Null()])),
+  language: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  imageUrl: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  sortOrder: Type.Integer({ default: 0 }),
 });
 
 export async function GET() {
@@ -29,7 +30,7 @@ export async function POST(req: NextRequest) {
   if (guard) return guard;
 
   const body = await req.json().catch(() => null);
-  const parsed = schema.safeParse(body);
+  const parsed = safeParse(schema, body);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }

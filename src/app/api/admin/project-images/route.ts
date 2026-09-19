@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { Type } from '@sinclair/typebox';
 import { db } from '@/db';
 import { projectImages } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { requireAdmin } from '@/lib/adminGuard';
+import { safeParse } from '@/lib/validate';
 
-const upsertSchema = z.object({
-  repoName: z.string().min(1),
-  imageUrl: z.string().min(1),
+const upsertSchema = Type.Object({
+  repoName: Type.String({ minLength: 1 }),
+  imageUrl: Type.String({ minLength: 1 }),
 });
 
 export async function GET() {
@@ -23,7 +24,7 @@ export async function POST(req: NextRequest) {
   if (guard) return guard;
 
   const body = await req.json().catch(() => null);
-  const parsed = upsertSchema.safeParse(body);
+  const parsed = safeParse(upsertSchema, body);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }

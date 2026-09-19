@@ -3,27 +3,9 @@
 import { startTransition, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import {
-  LayoutDashboard,
-  UserRound,
-  Wrench,
-  AtSign,
-  FolderGit2,
-  Building2,
-  LogOut,
-  Menu,
-  X,
-} from 'lucide-react';
+import { LogOut, Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-const NAV = [
-  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin/about', label: 'About Me', icon: UserRound },
-  { href: '/admin/skills', label: 'Skills', icon: Wrench },
-  { href: '/admin/contacts', label: 'Contacts', icon: AtSign },
-  { href: '/admin/projects', label: 'Projects', icon: FolderGit2 },
-  { href: '/admin/organizations', label: 'Organizations', icon: Building2 },
-];
+import { ADMIN_NAV } from '@/constants/adminNav';
 
 export default function AdminSidebar() {
   const pathname = usePathname();
@@ -44,7 +26,7 @@ export default function AdminSidebar() {
 
   const navItems = (
     <nav className="flex-1 flex flex-col gap-0.5 p-2 pt-4">
-      {NAV.map(({ href, label, icon: Icon }) => {
+      {ADMIN_NAV.map(({ href, label, icon: Icon }) => {
         const active = href === '/admin' ? pathname === href : pathname.startsWith(href);
         return (
           <Link

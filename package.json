@@ -20,6 +20,7 @@
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-hover-card": "^1.1.14",
     "@radix-ui/react-slot": "^1.2.3",
+    "@sinclair/typebox": "^0.34.52",
     "@tanstack/react-query": "^5.83.0",
     "@vercel/blob": "^2.3.3",
     "bcryptjs": "^3.0.3",
@@ -39,8 +40,7 @@
     "react-hook-form": "^7.72.1",
     "shiki": "^3.8.1",
     "sonner": "^2.0.7",
-    "tailwind-merge": "^3.3.1",
-    "zod": "^4.3.6"
+    "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

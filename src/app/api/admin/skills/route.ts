@@ -1,18 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { Type } from '@sinclair/typebox';
 import { db } from '@/db';
 import { skills } from '@/db/schema';
 import { asc } from 'drizzle-orm';
 import { requireAdmin } from '@/lib/adminGuard';
+import { safeParse } from '@/lib/validate';
+import { SKILL_CATEGORIES } from '@/constants/skillCategories';
 
-const schema = z.object({
-  logoUrl: z.string().min(1),
-  title: z.string().min(1),
-  firstTried: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Must be YYYY-MM-DD'),
-  category: z.enum(['Language', 'Backend', 'Database', 'Fullstack', 'DevOps', 'Frontend']),
-  description: z.string().min(1),
-  docsUrl: z.string().url(),
-  sortOrder: z.number().int().default(0),
+const schema = Type.Object({
+  logoUrl: Type.String({ minLength: 1 }),
+  title: Type.String({ minLength: 1 }),
+  firstTried: Type.String({ pattern: '^\\d{4}-\\d{2}-\\d{2}$' }),
+  category: Type.Union(SKILL_CATEGORIES.map((c) => Type.Literal(c))),
+  description: Type.String({ minLength: 1 }),
+  docsUrl: Type.String({ format: 'uri' }),
+  sortOrder: Type.Integer({ default: 0 }),
 });
 
 export async function GET() {
@@ -28,7 +30,7 @@ export async function POST(req: NextRequest) {
   if (guard) return guard;
 
   const body = await req.json().catch(() => null);
-  const parsed = schema.safeParse(body);
+  const parsed = safeParse(schema, body);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }

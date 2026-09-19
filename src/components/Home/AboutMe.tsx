@@ -6,36 +6,8 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useReducedMotion } from 'motion/react';
 import { cn } from '@/lib/utils';
-
-type Lang = 'rust' | 'tsx' | 'nest';
-
-const TABS: { lang: Lang; filename: string; icon: string; alt: string }[] = [
-  {
-    lang: 'nest',
-    filename: 'developer.controller.ts',
-    icon: '/Nest.js.svg',
-    alt: 'NestJS',
-  },
-  { lang: 'rust', filename: 'about_me.rs', icon: '/Rust.svg', alt: 'Rust' },
-  {
-    lang: 'tsx',
-    filename: 'AboutMe.tsx',
-    icon: '/TypeScript.svg',
-    alt: 'TypeScript',
-  },
-];
-
-const SHIKI_LANG: Record<Lang, string> = {
-  rust: 'rust',
-  tsx: 'tsx',
-  nest: 'typescript',
-};
-
-const DURATION: Record<Lang, number> = {
-  rust: 20,
-  tsx: 16,
-  nest: 18,
-};
+import { ABOUT_ME_TABS, ABOUT_ME_SHIKI_LANG, ABOUT_ME_DURATION } from '@/constants/aboutMeTabs';
+import type { AboutMeLang } from '@/types/aboutMe';
 
 function renderInline(text: string) {
   return text
@@ -96,10 +68,10 @@ interface Props {
 }
 
 export default function AboutMe({ rustCode, tsCode, nestCode, hrSummary }: Props) {
-  const [lang, setLang] = useState<Lang>('nest');
+  const [lang, setLang] = useState<AboutMeLang>('nest');
   const [audience, setAudience] = useState<'dev' | 'hr'>('hr');
   const prefersReducedMotion = useReducedMotion();
-  const CODE: Record<Lang, string> = {
+  const CODE: Record<AboutMeLang, string> = {
     rust: rustCode,
     tsx: tsCode,
     nest: nestCode,
@@ -119,7 +91,7 @@ export default function AboutMe({ rustCode, tsCode, nestCode, hrSummary }: Props
         role="tablist"
         aria-label="Code language"
       >
-        {TABS.map((tab) => {
+        {ABOUT_ME_TABS.map((tab) => {
           const active = lang === tab.lang;
           return (
             <button
@@ -210,8 +182,8 @@ export default function AboutMe({ rustCode, tsCode, nestCode, hrSummary }: Props
           cursor={!prefersReducedMotion}
           writing={!prefersReducedMotion}
           className={editorSize}
-          lang={SHIKI_LANG[lang]}
-          duration={DURATION[lang]}
+          lang={ABOUT_ME_SHIKI_LANG[lang]}
+          duration={ABOUT_ME_DURATION[lang]}
           delay={0.3}
         >
           {code}

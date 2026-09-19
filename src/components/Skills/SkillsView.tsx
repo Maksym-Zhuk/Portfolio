@@ -1,162 +1,24 @@
 'use client';
 
-import { Skill } from '@/types/skills';
+import { Skill, SkillViewMode } from '@/types/skills';
 import { useState } from 'react';
 import SkillPageCard from './SkillPageCard';
 import SkillTimeline from './SkillTimeline';
 import SectionHeading from '@/components/shared/SectionHeading';
 import { cn } from '@/lib/utils';
-
-const CATEGORY_ORDER = [
-  'Language',
-  'Backend',
-  'Database',
-  'Fullstack',
-  'DevOps',
-  'Frontend',
-];
-const CATEGORY_LABELS: Record<string, string> = {
-  Language: 'Languages',
-  Backend: 'Backend',
-  Database: 'Databases',
-  Fullstack: 'Full Stack',
-  DevOps: 'DevOps & Tools',
-  Frontend: 'Frontend',
-};
-
-type ViewMode = 'category' | 'timeline';
-
-const MODES: { id: ViewMode; label: string; icon: React.ReactNode }[] = [
-  {
-    id: 'category',
-    label: 'Stack',
-    icon: (
-      <svg
-        width="14"
-        height="14"
-        viewBox="0 0 14 14"
-        fill="none"
-        aria-hidden="true"
-      >
-        <rect
-          x="1"
-          y="1"
-          width="5"
-          height="5"
-          rx="1"
-          stroke="currentColor"
-          strokeWidth="1.3"
-        />
-        <rect
-          x="8"
-          y="1"
-          width="5"
-          height="5"
-          rx="1"
-          stroke="currentColor"
-          strokeWidth="1.3"
-        />
-        <rect
-          x="1"
-          y="8"
-          width="5"
-          height="5"
-          rx="1"
-          stroke="currentColor"
-          strokeWidth="1.3"
-        />
-        <rect
-          x="8"
-          y="8"
-          width="5"
-          height="5"
-          rx="1"
-          stroke="currentColor"
-          strokeWidth="1.3"
-        />
-      </svg>
-    ),
-  },
-  {
-    id: 'timeline',
-    label: 'Timeline',
-    icon: (
-      <svg
-        width="14"
-        height="14"
-        viewBox="0 0 14 14"
-        fill="none"
-        aria-hidden="true"
-      >
-        <circle cx="3" cy="3" r="1.5" stroke="currentColor" strokeWidth="1.3" />
-        <circle cx="3" cy="7" r="1.5" stroke="currentColor" strokeWidth="1.3" />
-        <circle
-          cx="3"
-          cy="11"
-          r="1.5"
-          stroke="currentColor"
-          strokeWidth="1.3"
-        />
-        <line
-          x1="3"
-          y1="4.5"
-          x2="3"
-          y2="5.5"
-          stroke="currentColor"
-          strokeWidth="1.3"
-          strokeLinecap="round"
-        />
-        <line
-          x1="3"
-          y1="8.5"
-          x2="3"
-          y2="9.5"
-          stroke="currentColor"
-          strokeWidth="1.3"
-          strokeLinecap="round"
-        />
-        <line
-          x1="6"
-          y1="3"
-          x2="13"
-          y2="3"
-          stroke="currentColor"
-          strokeWidth="1.3"
-          strokeLinecap="round"
-        />
-        <line
-          x1="6"
-          y1="7"
-          x2="11"
-          y2="7"
-          stroke="currentColor"
-          strokeWidth="1.3"
-          strokeLinecap="round"
-        />
-        <line
-          x1="6"
-          y1="11"
-          x2="9"
-          y2="11"
-          stroke="currentColor"
-          strokeWidth="1.3"
-          strokeLinecap="round"
-        />
-      </svg>
-    ),
-  },
-];
+import { SKILL_CATEGORIES, SKILL_CATEGORY_LABELS } from '@/constants/skillCategories';
+import { SKILL_VIEW_MODES } from '@/constants/skillViewModes';
 
 interface Props {
   skills: Skill[];
 }
 
 export default function SkillsView({ skills }: Props) {
-  const [mode, setMode] = useState<ViewMode>('category');
+  const [mode, setMode] = useState<SkillViewMode>('category');
 
-  const grouped = CATEGORY_ORDER.map((cat) => ({
+  const grouped = SKILL_CATEGORIES.map((cat) => ({
     category: cat,
-    label: CATEGORY_LABELS[cat],
+    label: SKILL_CATEGORY_LABELS[cat],
     skills: skills.filter((s) => s.category === cat),
   })).filter((g) => g.skills.length > 0);
 
@@ -174,7 +36,7 @@ export default function SkillsView({ skills }: Props) {
           aria-label="Skills display mode"
           className="flex rounded-xl border border-border overflow-hidden self-start sm:self-auto shrink-0 "
         >
-          {MODES.map((m, i) => (
+          {SKILL_VIEW_MODES.map((m, i) => (
             <button
               key={m.id}
               onClick={() => setMode(m.id)}

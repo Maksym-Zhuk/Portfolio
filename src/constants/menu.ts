@@ -22,3 +22,7 @@ export const Menu: IMenu[] = [
     link: '/#contacts',
   },
 ];
+
+export const SECTION_IDS = Menu.filter((item) => item.link.startsWith('/#')).map(
+  (item) => item.link.slice(2),
+);

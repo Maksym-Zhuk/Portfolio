@@ -1,14 +1,10 @@
 'use client';
 import { Divide as Hamburger } from 'hamburger-react';
-import { Menu } from '@/constants/menu';
+import { Menu, SECTION_IDS } from '@/constants/menu';
 import type { IMenu } from '@/types/menu';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useActiveSection } from '@/hooks/useActiveSection';
-
-const SECTION_IDS = Menu.filter((item) => item.link.startsWith('/#')).map(
-  (item) => item.link.slice(2),
-);
 
 type Props = {
   isOpen: boolean;

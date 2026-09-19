@@ -3,8 +3,8 @@
 import { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { typeboxResolver } from '@hookform/resolvers/typebox';
+import { Type, type Static } from '@sinclair/typebox';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -18,31 +18,31 @@ import { Pencil, Trash2 } from 'lucide-react';
 import { ConfirmButton } from '@/components/admin/ConfirmButton';
 import type { Organization, GithubOrg } from '@/db/schema';
 
-const orgSchema = z.object({
-  name: z.string().min(1, 'Name required'),
-  slug: z.string().min(1, 'Slug required'),
-  logoUrl: z.string().optional().nullable(),
-  description: z.string(),
-  githubUrl: z.string().url('Must be a valid URL'),
-  websiteUrl: z.string().url().optional().or(z.literal('')).nullable(),
-  roleBadge: z.string().optional().nullable(),
-  version: z.string().optional().nullable(),
-  languageName: z.string().optional().nullable(),
-  languagePct: z.number().int().min(0).max(100).optional().nullable(),
-  releasesCount: z.number().int().min(0).optional().nullable(),
-  license: z.string().optional().nullable(),
-  status: z.string().optional().nullable(),
-  tags: z.string().optional(),
-  sortOrder: z.number().int(),
+const orgSchema = Type.Object({
+  name: Type.String({ minLength: 1 }),
+  slug: Type.String({ minLength: 1 }),
+  logoUrl: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  description: Type.String(),
+  githubUrl: Type.String({ format: 'uri' }),
+  websiteUrl: Type.Optional(Type.Union([Type.String({ format: 'uri' }), Type.Literal(''), Type.Null()])),
+  roleBadge: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  version: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  languageName: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  languagePct: Type.Optional(Type.Union([Type.Integer({ minimum: 0, maximum: 100 }), Type.Null()])),
+  releasesCount: Type.Optional(Type.Union([Type.Integer({ minimum: 0 }), Type.Null()])),
+  license: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  status: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  tags: Type.Optional(Type.String()),
+  sortOrder: Type.Integer(),
 });
-type OrgFormData = z.infer<typeof orgSchema>;
+type OrgFormData = Static<typeof orgSchema>;
 
-const githubOrgSchema = z.object({
-  orgLogin: z.string().min(1, 'Org login required'),
-  displayName: z.string().min(1, 'Display name required'),
-  enabled: z.boolean(),
+const githubOrgSchema = Type.Object({
+  orgLogin: Type.String({ minLength: 1 }),
+  displayName: Type.String({ minLength: 1 }),
+  enabled: Type.Boolean(),
 });
-type GithubOrgFormData = z.infer<typeof githubOrgSchema>;
+type GithubOrgFormData = Static<typeof githubOrgSchema>;
 
 async function fetchOrgs(): Promise<Organization[]> {
   const res = await fetch('/api/admin/organizations');
@@ -68,7 +68,7 @@ export default function OrganizationsPage() {
   const logoFileRef = useRef<HTMLInputElement>(null);
 
   const orgForm = useForm<OrgFormData>({
-    resolver: zodResolver(orgSchema),
+    resolver: typeboxResolver(orgSchema),
     defaultValues: { name: '', slug: '', logoUrl: '', description: '', githubUrl: '', websiteUrl: '', roleBadge: '', version: '', languageName: '', languagePct: undefined, releasesCount: undefined, license: '', status: '', tags: '', sortOrder: 0 },
   });
 
@@ -91,7 +91,7 @@ export default function OrganizationsPage() {
   }
 
   const githubOrgForm = useForm<GithubOrgFormData>({
-    resolver: zodResolver(githubOrgSchema),
+    resolver: typeboxResolver(githubOrgSchema),
     defaultValues: { orgLogin: '', displayName: '', enabled: true },
   });
 

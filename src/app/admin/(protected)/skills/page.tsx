@@ -3,8 +3,8 @@
 import { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { typeboxResolver } from '@hookform/resolvers/typebox';
+import { Type, type Static } from '@sinclair/typebox';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,19 +17,19 @@ import { Pencil, Trash2 } from 'lucide-react';
 import { ConfirmButton } from '@/components/admin/ConfirmButton';
 import Image from 'next/image';
 import type { Skill } from '@/db/schema';
+import type { SkillCategory } from '@/types/skills';
+import { SKILL_CATEGORIES } from '@/constants/skillCategories';
 
-const CATEGORIES = ['Language', 'Backend', 'Database', 'Fullstack', 'DevOps', 'Frontend'] as const;
-
-const schema = z.object({
-  logoUrl: z.string().min(1, 'Logo is required'),
-  title: z.string().min(1, 'Title is required'),
-  firstTried: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Must be YYYY-MM-DD'),
-  category: z.enum(CATEGORIES),
-  description: z.string().min(1, 'Description is required'),
-  docsUrl: z.string().url('Must be a valid URL'),
-  sortOrder: z.number().int(),
+const schema = Type.Object({
+  logoUrl: Type.String({ minLength: 1 }),
+  title: Type.String({ minLength: 1 }),
+  firstTried: Type.String({ pattern: '^\\d{4}-\\d{2}-\\d{2}$' }),
+  category: Type.Union(SKILL_CATEGORIES.map((c) => Type.Literal(c))),
+  description: Type.String({ minLength: 1 }),
+  docsUrl: Type.String({ format: 'uri' }),
+  sortOrder: Type.Integer(),
 });
-type FormData = z.infer<typeof schema>;
+type FormData = Static<typeof schema>;
 
 async function fetchSkills(): Promise<Skill[]> {
   const res = await fetch('/api/admin/skills');
@@ -46,7 +46,7 @@ export default function SkillsPage() {
   const fileRef = useRef<HTMLInputElement>(null);
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors, isSubmitting } } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: typeboxResolver(schema),
     defaultValues: { logoUrl: '', title: '', firstTried: '', category: 'Backend', description: '', docsUrl: '', sortOrder: 0 },
   });
 
@@ -65,7 +65,7 @@ export default function SkillsPage() {
       logoUrl: skill.logoUrl,
       title: skill.title,
       firstTried: skill.firstTried,
-      category: skill.category as typeof CATEGORIES[number],
+      category: skill.category as SkillCategory,
       description: skill.description,
       docsUrl: skill.docsUrl,
       sortOrder: skill.sortOrder,
@@ -241,10 +241,10 @@ export default function SkillsPage() {
 
             <div className="flex flex-col gap-1.5">
               <Label>Category</Label>
-              <Select value={category} onValueChange={(v) => setValue('category', v as typeof CATEGORIES[number], { shouldDirty: true })}>
+              <Select value={category} onValueChange={(v) => setValue('category', v as SkillCategory, { shouldDirty: true })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {CATEGORIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  {SKILL_CATEGORIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>

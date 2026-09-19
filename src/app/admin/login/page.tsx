@@ -3,24 +3,24 @@
 import { startTransition, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { typeboxResolver } from '@hookform/resolvers/typebox';
+import { Type, type Static } from '@sinclair/typebox';
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-const schema = z.object({
-  password: z.string().min(1, 'Password is required'),
+const schema = Type.Object({
+  password: Type.String({ minLength: 1 }),
 });
-type FormData = z.infer<typeof schema>;
+type FormData = Static<typeof schema>;
 
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState: { isSubmitting } } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: typeboxResolver(schema),
   });
 
   async function onSubmit(data: FormData) {
