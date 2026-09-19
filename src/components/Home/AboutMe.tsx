@@ -37,14 +37,67 @@ const DURATION: Record<Lang, number> = {
   nest: 18,
 };
 
+function renderInline(text: string) {
+  return text
+    .split(/(\*\*[^*]+\*\*|==[^=]+==)/g)
+    .filter(Boolean)
+    .map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return (
+          <strong key={i} className="font-semibold text-foreground">
+            {part.slice(2, -2)}
+          </strong>
+        );
+      }
+      if (part.startsWith('==') && part.endsWith('==')) {
+        return (
+          <span key={i} className="text-primary font-semibold">
+            {part.slice(2, -2)}
+          </span>
+        );
+      }
+      return part;
+    });
+}
+
+function renderHrSummary(text: string) {
+  return text
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line, i) => {
+      if (line.startsWith('## ')) {
+        return (
+          <h3 key={i} className="text-lg sm:text-xl font-semibold text-foreground">
+            {renderInline(line.slice(3))}
+          </h3>
+        );
+      }
+      if (line.startsWith('# ')) {
+        return (
+          <h2 key={i} className="text-2xl sm:text-3xl font-bold text-foreground">
+            {renderInline(line.slice(2))}
+          </h2>
+        );
+      }
+      return (
+        <p key={i} className="text-base sm:text-lg leading-relaxed text-muted-foreground">
+          {renderInline(line)}
+        </p>
+      );
+    });
+}
+
 interface Props {
   rustCode: string;
   tsCode: string;
   nestCode: string;
+  hrSummary: string;
 }
 
-export default function AboutMe({ rustCode, tsCode, nestCode }: Props) {
+export default function AboutMe({ rustCode, tsCode, nestCode, hrSummary }: Props) {
   const [lang, setLang] = useState<Lang>('nest');
+  const [audience, setAudience] = useState<'dev' | 'hr'>('hr');
   const prefersReducedMotion = useReducedMotion();
   const CODE: Record<Lang, string> = {
     rust: rustCode,
@@ -112,20 +165,60 @@ export default function AboutMe({ rustCode, tsCode, nestCode }: Props) {
     </div>
   );
 
+  const widthClass = 'xl:min-w-[600px] lg:w-[490px] md:w-4/5 w-full';
+  const editorSize = cn(widthClass, 'lg:h-[580px] sm:h-[500px] min-[400px]:h-[600px] h-[650px]');
+
   return (
-    <div className="lg:w-2/4 flex lg:justify-start justify-center items-center">
-      <CodeEditor
-        key={lang}
-        customHeader={tabHeader}
-        cursor={!prefersReducedMotion}
-        writing={!prefersReducedMotion}
-        className="xl:min-w-[600px] lg:w-[490px] md:w-4/5 w-full lg:h-[580px] sm:h-[500px] min-[400px]:h-[600px] h-[650px]"
-        lang={SHIKI_LANG[lang]}
-        duration={DURATION[lang]}
-        delay={0.3}
+    <div className="lg:w-2/4 flex flex-col justify-center gap-4 lg:items-start items-center">
+      <div
+        role="tablist"
+        aria-label="Viewing as"
+        className="inline-flex items-center rounded-lg border border-border bg-muted p-1 font-mono text-xs"
       >
-        {code}
-      </CodeEditor>
+        <button
+          role="tab"
+          aria-selected={audience === 'hr'}
+          onClick={() => setAudience('hr')}
+          className={cn(
+            'px-3 py-1.5 rounded-md transition-colors duration-150',
+            audience === 'hr'
+              ? 'bg-background text-foreground shadow-xs'
+              : 'text-muted-foreground hover:text-foreground',
+          )}
+        >
+          For HR
+        </button>
+        <button
+          role="tab"
+          aria-selected={audience === 'dev'}
+          onClick={() => setAudience('dev')}
+          className={cn(
+            'px-3 py-1.5 rounded-md transition-colors duration-150',
+            audience === 'dev'
+              ? 'bg-background text-foreground shadow-xs'
+              : 'text-muted-foreground hover:text-foreground',
+          )}
+        >
+          For Devs
+        </button>
+      </div>
+
+      {audience === 'dev' ? (
+        <CodeEditor
+          key={lang}
+          customHeader={tabHeader}
+          cursor={!prefersReducedMotion}
+          writing={!prefersReducedMotion}
+          className={editorSize}
+          lang={SHIKI_LANG[lang]}
+          duration={DURATION[lang]}
+          delay={0.3}
+        >
+          {code}
+        </CodeEditor>
+      ) : (
+        <div className={cn(widthClass, 'flex flex-col gap-3')}>{renderHrSummary(hrSummary)}</div>
+      )}
     </div>
   );
 }

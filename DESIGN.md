@@ -224,7 +224,7 @@ The hero's centerpiece: a macOS-style editor chrome (traffic-light dots, a mono 
 - **Do** build depth with tonal steps (Canvas → Surface → Surface-Raised) and green-tinted hairline borders; reach for the green *glow*, not dark shadows, to lift elements (The Glow-Not-Shadow Rule).
 - **Do** keep body text at Ink (`oklch(0.93 0 0)`), Ink-Soft, or Ink-Muted (`oklch(0.66 0.012 156)`) and verify ≥4.5:1; never dim muted text below that lightness on the reading path (The Contrast Floor Rule).
 - **Do** give every animation — especially the typewriter code editor — a `prefers-reduced-motion` fallback that shows final content instantly.
-- **Do** lead with concrete proof (Oxide, Rust CLI work, real repos); show, don't tell.
+- **Do** lead with concrete proof (Anesis, Rust CLI work, real repos); show, don't tell.
 
 ### Don't:
 - **Don't** ship the generic SaaS/Next.js-template portfolio look: hero gradient + an identical icon-heading-text project-card grid repeated endlessly.

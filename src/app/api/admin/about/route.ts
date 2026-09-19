@@ -9,6 +9,7 @@ const schema = z.object({
   rustCode: z.string(),
   tsCode: z.string(),
   nestCode: z.string(),
+  hrSummary: z.string(),
 });
 
 export async function GET() {
@@ -16,7 +17,7 @@ export async function GET() {
   if (guard) return guard;
 
   const [row] = await db.select().from(aboutMe).where(eq(aboutMe.id, 1)).limit(1);
-  return NextResponse.json(row ?? { rustCode: '', tsCode: '', nestCode: '' });
+  return NextResponse.json(row ?? { rustCode: '', tsCode: '', nestCode: '', hrSummary: '' });
 }
 
 export async function PUT(req: NextRequest) {

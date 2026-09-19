@@ -4,6 +4,11 @@ import { Menu } from '@/constants/menu';
 import type { IMenu } from '@/types/menu';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useActiveSection } from '@/hooks/useActiveSection';
+
+const SECTION_IDS = Menu.filter((item) => item.link.startsWith('/#')).map(
+  (item) => item.link.slice(2),
+);
 
 type Props = {
   isOpen: boolean;
@@ -12,6 +17,7 @@ type Props = {
 
 export default function FullScreenNav({ isOpen, setIsOpen }: Props) {
   const pathname = usePathname();
+  const activeSection = useActiveSection(SECTION_IDS);
 
   return (
     <div>
@@ -42,9 +48,8 @@ export default function FullScreenNav({ isOpen, setIsOpen }: Props) {
             {Menu.map((item: IMenu) => {
               const isActive =
                 item.link === '/'
-                  ? pathname === '/'
-                  : pathname === item.link ||
-                    pathname.startsWith(item.link + '/');
+                  ? pathname === '/' && activeSection === ''
+                  : pathname === '/' && activeSection === item.link.slice(2);
 
               return (
                 <li key={item.id}>

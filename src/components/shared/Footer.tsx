@@ -5,7 +5,7 @@ export default function Footer() {
         © 2026 Maksym Zhuk. All rights reserved.
       </span>
       <span className="text-xs font-mono text-muted-foreground/60 tracking-widest uppercase">
-        Backend Engineer · Rust · Systems
+        Full Stack · Systems
       </span>
     </footer>
   );

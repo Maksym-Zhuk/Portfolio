@@ -164,7 +164,6 @@ export default function SkillsView({ skills }: Props) {
     <div className="flex flex-col gap-12">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
         <SectionHeading
-          as="h1"
           path="skills"
           title="Skills"
           meta={`${skills.length} technologies`}

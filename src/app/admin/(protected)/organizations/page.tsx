@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,6 +21,7 @@ import type { Organization, GithubOrg } from '@/db/schema';
 const orgSchema = z.object({
   name: z.string().min(1, 'Name required'),
   slug: z.string().min(1, 'Slug required'),
+  logoUrl: z.string().optional().nullable(),
   description: z.string(),
   githubUrl: z.string().url('Must be a valid URL'),
   websiteUrl: z.string().url().optional().or(z.literal('')).nullable(),
@@ -63,11 +64,31 @@ export default function OrganizationsPage() {
   const [orgOpen, setOrgOpen] = useState(false);
   const [editingOrg, setEditingOrg] = useState<Organization | null>(null);
   const [githubOrgOpen, setGithubOrgOpen] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+  const logoFileRef = useRef<HTMLInputElement>(null);
 
   const orgForm = useForm<OrgFormData>({
     resolver: zodResolver(orgSchema),
-    defaultValues: { name: '', slug: '', description: '', githubUrl: '', websiteUrl: '', roleBadge: '', version: '', languageName: '', languagePct: undefined, releasesCount: undefined, license: '', status: '', tags: '', sortOrder: 0 },
+    defaultValues: { name: '', slug: '', logoUrl: '', description: '', githubUrl: '', websiteUrl: '', roleBadge: '', version: '', languageName: '', languagePct: undefined, releasesCount: undefined, license: '', status: '', tags: '', sortOrder: 0 },
   });
+
+  async function uploadLogo() {
+    const file = logoFileRef.current?.files?.[0];
+    if (!file) return;
+    setUploadingLogo(true);
+    try {
+      const form = new FormData();
+      form.append('file', file);
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: form });
+      if (!res.ok) throw new Error();
+      const { url } = await res.json();
+      orgForm.setValue('logoUrl', url, { shouldDirty: true });
+    } catch {
+      toast.error('Upload failed.');
+    } finally {
+      setUploadingLogo(false);
+    }
+  }
 
   const githubOrgForm = useForm<GithubOrgFormData>({
     resolver: zodResolver(githubOrgSchema),
@@ -76,14 +97,14 @@ export default function OrganizationsPage() {
 
   function openAddOrg() {
     setEditingOrg(null);
-    orgForm.reset({ name: '', slug: '', description: '', githubUrl: '', websiteUrl: '', roleBadge: '', version: '', languageName: '', languagePct: undefined, releasesCount: undefined, license: '', status: '', tags: '', sortOrder: orgs.length });
+    orgForm.reset({ name: '', slug: '', logoUrl: '', description: '', githubUrl: '', websiteUrl: '', roleBadge: '', version: '', languageName: '', languagePct: undefined, releasesCount: undefined, license: '', status: '', tags: '', sortOrder: orgs.length });
     setOrgOpen(true);
   }
 
   function openEditOrg(o: Organization) {
     setEditingOrg(o);
     orgForm.reset({
-      name: o.name, slug: o.slug, description: o.description,
+      name: o.name, slug: o.slug, logoUrl: o.logoUrl ?? '', description: o.description,
       githubUrl: o.githubUrl, websiteUrl: o.websiteUrl ?? '', roleBadge: o.roleBadge ?? '',
       version: o.version ?? '', languageName: o.languageName ?? '',
       languagePct: o.languagePct ?? undefined, releasesCount: o.releasesCount ?? undefined,
@@ -98,6 +119,7 @@ export default function OrganizationsPage() {
       const payload = {
         ...data,
         tags: data.tags ? data.tags.split(',').map((t) => t.trim()).filter(Boolean) : [],
+        logoUrl: data.logoUrl || null,
         websiteUrl: data.websiteUrl || null,
         roleBadge: data.roleBadge || null,
         version: data.version || null,
@@ -161,6 +183,13 @@ export default function OrganizationsPage() {
           <div className="flex flex-col gap-3">
             {orgs.map((o) => (
               <div key={o.id} className="border border-border rounded-xl p-4 bg-card flex items-start justify-between gap-4">
+                <div className="flex items-start gap-3">
+                  {o.logoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={o.logoUrl} alt="" className="size-9 rounded border border-border object-contain bg-background shrink-0" />
+                  ) : (
+                    <div className="size-9 rounded border border-border bg-background shrink-0" aria-hidden="true" />
+                  )}
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-2">
                     <span className="font-bold">{o.name}</span>
@@ -171,6 +200,7 @@ export default function OrganizationsPage() {
                   <div className="flex flex-wrap gap-1 mt-1">
                     {o.tags?.map((tag) => <Badge key={tag} variant="outline" className="text-xs font-mono">{tag}</Badge>)}
                   </div>
+                </div>
                 </div>
                 <div className="flex gap-0.5 shrink-0">
                   <Button
@@ -264,9 +294,33 @@ export default function OrganizationsPage() {
           <DialogHeader><DialogTitle className="font-mono">{editingOrg ? 'Edit organization' : 'Add organization'}</DialogTitle></DialogHeader>
           <form onSubmit={orgForm.handleSubmit((d) => saveOrgMutation.mutate(d))} className="flex flex-col gap-4 pt-2">
             {[
-              { name: 'name' as const, label: 'Name', placeholder: 'Oxide' },
-              { name: 'slug' as const, label: 'Slug', placeholder: 'oxide-cli' },
-              { name: 'githubUrl' as const, label: 'GitHub URL', placeholder: 'https://github.com/oxide-cli' },
+              { name: 'name' as const, label: 'Name', placeholder: 'Anesis' },
+              { name: 'slug' as const, label: 'Slug', placeholder: 'anesis-cli' },
+            ].map(({ name, label, placeholder }) => (
+              <div key={name} className="flex flex-col gap-1.5">
+                <Label htmlFor={`org-${name}`}>{label}</Label>
+                <Input id={`org-${name}`} placeholder={placeholder} {...orgForm.register(name)} className={name === 'slug' ? 'font-mono text-xs' : ''} />
+                {orgForm.formState.errors[name] && <p className="text-xs text-destructive">{(orgForm.formState.errors[name] as { message?: string })?.message}</p>}
+              </div>
+            ))}
+            <div className="flex flex-col gap-1.5">
+              <Label>Logo</Label>
+              <div className="flex items-center gap-2">
+                {orgForm.watch('logoUrl') && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={orgForm.watch('logoUrl') ?? ''} alt="" className="size-9 rounded border border-border object-contain bg-background" />
+                )}
+                <Button type="button" variant="outline" size="sm" disabled={uploadingLogo}
+                  onClick={() => logoFileRef.current?.click()}>
+                  {uploadingLogo ? 'Uploading…' : 'Upload logo'}
+                </Button>
+                <input ref={logoFileRef} type="file" accept="image/*" className="hidden"
+                  onChange={(e) => { const f = e.target.files?.[0]; if (f) { logoFileRef.current!.value = ''; uploadLogo(); } }} />
+              </div>
+              <Input placeholder="or paste URL" {...orgForm.register('logoUrl')} className="font-mono text-xs" />
+            </div>
+            {[
+              { name: 'githubUrl' as const, label: 'GitHub URL', placeholder: 'https://github.com/anesis-cli' },
               { name: 'websiteUrl' as const, label: 'Website URL (optional)', placeholder: 'https://...' },
               { name: 'roleBadge' as const, label: 'Role badge (optional)', placeholder: 'Lead Developer' },
               { name: 'version' as const, label: 'Version (optional)', placeholder: 'v0.4.0' },
@@ -277,7 +331,7 @@ export default function OrganizationsPage() {
             ].map(({ name, label, placeholder }) => (
               <div key={name} className="flex flex-col gap-1.5">
                 <Label htmlFor={`org-${name}`}>{label}</Label>
-                <Input id={`org-${name}`} placeholder={placeholder} {...orgForm.register(name)} className={name.includes('Url') || name === 'slug' || name === 'tags' ? 'font-mono text-xs' : ''} />
+                <Input id={`org-${name}`} placeholder={placeholder} {...orgForm.register(name)} className={name.includes('Url') || name === 'tags' ? 'font-mono text-xs' : ''} />
                 {orgForm.formState.errors[name] && <p className="text-xs text-destructive">{(orgForm.formState.errors[name] as { message?: string })?.message}</p>}
               </div>
             ))}
@@ -313,12 +367,12 @@ export default function OrganizationsPage() {
           <form onSubmit={githubOrgForm.handleSubmit((d) => saveGithubOrgMutation.mutate(d))} className="flex flex-col gap-4 pt-2">
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="go-login">Org login (GitHub username)</Label>
-              <Input id="go-login" placeholder="oxide-cli" {...githubOrgForm.register('orgLogin')} className="font-mono" />
+              <Input id="go-login" placeholder="anesis-cli" {...githubOrgForm.register('orgLogin')} className="font-mono" />
               {githubOrgForm.formState.errors.orgLogin && <p className="text-xs text-destructive">{githubOrgForm.formState.errors.orgLogin.message}</p>}
             </div>
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="go-display">Display name</Label>
-              <Input id="go-display" placeholder="Oxide" {...githubOrgForm.register('displayName')} />
+              <Input id="go-display" placeholder="Anesis" {...githubOrgForm.register('displayName')} />
               {githubOrgForm.formState.errors.displayName && <p className="text-xs text-destructive">{githubOrgForm.formState.errors.displayName.message}</p>}
             </div>
             <div className="flex gap-2 justify-end pt-2">

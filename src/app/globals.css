@@ -45,6 +45,54 @@
 
 :root {
   --radius: 0.5rem;
+  --grid-line: oklch(0 0 0 / 0.05);
+
+  /* Paper, not pure white. Card sits a touch lighter than background so
+     surfaces visibly separate, with a faint green tint (hue 156) matching
+     the dark theme's undertone. */
+  --background: oklch(0.98 0.003 156);
+  --foreground: oklch(0.16 0.01 156);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.16 0.01 156);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0.01 156);
+
+  /* Same hue as the dark theme's signal green, darkened for AA contrast on
+     white surfaces. */
+  --primary: oklch(0.5 0.15 153);
+  --primary-foreground: oklch(0.98 0.01 156);
+
+  --secondary: oklch(0.95 0.005 156);
+  --secondary-foreground: oklch(0.2 0.01 156);
+  --muted: oklch(0.95 0.005 156);
+  --muted-foreground: oklch(0.45 0.014 156);
+
+  --accent: oklch(0.95 0.005 156);
+  --accent-foreground: oklch(0.16 0.01 156);
+
+  --destructive: oklch(0.55 0.2 25);
+  --border: oklch(0.89 0.006 156);
+  --input: oklch(0.93 0.006 156);
+  --ring: oklch(0.5 0.15 153);
+
+  --chart-1: oklch(0.5 0.15 153);
+  --chart-2: oklch(0.55 0.12 215);
+  --chart-3: oklch(0.6 0.15 130);
+  --chart-4: oklch(0.55 0.17 303);
+  --chart-5: oklch(0.6 0.15 70);
+
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.16 0.01 156);
+  --sidebar-primary: oklch(0.5 0.15 153);
+  --sidebar-primary-foreground: oklch(0.98 0.01 156);
+  --sidebar-accent: oklch(0.95 0.005 156);
+  --sidebar-accent-foreground: oklch(0.16 0.01 156);
+  --sidebar-border: oklch(0.89 0.006 156);
+  --sidebar-ring: oklch(0.5 0.15 153);
+}
+
+.dark {
+  --grid-line: oklch(1 0 0 / 0.022);
 
   /* Neutrals: graphite, not pure black. Each layer steps ~0.06 in lightness so
      surfaces visibly separate ("no black-on-black"), with a faint green tint
@@ -96,8 +144,8 @@
 /* Subtle grid texture — technical / systems aesthetic */
 body {
   background-image:
-    linear-gradient(oklch(1 0 0 / 0.022) 1px, transparent 1px),
-    linear-gradient(90deg, oklch(1 0 0 / 0.022) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 48px 48px;
   background-attachment: fixed;
 }

@@ -4,6 +4,7 @@ const nextConfig = {
     optimizeCss: false,
   },
   images: {
+    dangerouslyAllowSVG: true,
     remotePatterns: [
       {
         protocol: 'https',

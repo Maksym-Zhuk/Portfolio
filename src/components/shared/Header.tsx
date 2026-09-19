@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Nav from './Nav/Nav';
 import FullScreenNav from './Nav/FullScreenNav';
+import ThemeToggle from './ThemeToggle';
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 import { useState } from 'react';
 
@@ -41,7 +42,10 @@ export default function Header() {
 
         <Nav />
 
-        <FullScreenNav isOpen={isOpen} setIsOpen={setIsOpen} />
+        <div className="flex items-center gap-1">
+          <ThemeToggle />
+          <FullScreenNav isOpen={isOpen} setIsOpen={setIsOpen} />
+        </div>
       </div>
     </header>
   );

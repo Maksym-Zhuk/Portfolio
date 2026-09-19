@@ -20,9 +20,9 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   icons: '/Maksym_Zhuk.svg',
-  title: 'Maksym Zhuk — Backend Engineer',
+  title: 'Maksym Zhuk — Full Stack Engineer',
   description:
-    'Backend-first developer building high-performance, scalable systems. Rust enthusiast and lead developer at Oxide.',
+    'Full-stack developer building high-performance, scalable systems. Lead developer at Anesis.',
 };
 
 export default function RootLayout({
@@ -31,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${syne.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >

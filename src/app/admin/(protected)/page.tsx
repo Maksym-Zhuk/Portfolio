@@ -63,8 +63,8 @@ export default async function AdminDashboard() {
         <div className="flex flex-wrap gap-2">
           {[
             { href: '/', label: 'View site' },
-            { href: '/skills', label: 'View skills' },
-            { href: '/projects', label: 'View projects' },
+            { href: '/#skills', label: 'View skills' },
+            { href: '/#projects', label: 'View projects' },
             { href: '/admin/about', label: 'Edit About Me' },
           ].map(({ href, label }) => (
             <Link

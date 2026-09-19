@@ -4,9 +4,15 @@ import type { IMenu } from '@/types/menu';
 import { Menu } from '@/constants/menu';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useActiveSection } from '@/hooks/useActiveSection';
+
+const SECTION_IDS = Menu.filter((item) => item.link.startsWith('/#')).map(
+  (item) => item.link.slice(2),
+);
 
 export default function Nav() {
   const pathname = usePathname();
+  const activeSection = useActiveSection(SECTION_IDS);
 
   return (
     <nav className="md:flex hidden" aria-label="Main navigation">
@@ -14,8 +20,8 @@ export default function Nav() {
         {Menu.map((item: IMenu) => {
           const isActive =
             item.link === '/'
-              ? pathname === '/'
-              : pathname === item.link || pathname.startsWith(item.link + '/');
+              ? pathname === '/' && activeSection === ''
+              : pathname === '/' && activeSection === item.link.slice(2);
 
           return (
             <li key={item.id}>

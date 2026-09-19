@@ -1,20 +1,12 @@
-/**
- * One-time seed script. Run with: bun run seed
- * Populates the DB from static constants and hardcoded component values.
- */
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 import * as schema from '../src/db/schema';
-
-// Load .env.local first, fall back to .env (bun reads .env automatically but not .env.local)
 import { config } from 'dotenv';
 config({ path: '.env.local' });
-config({ path: '.env' }); // fallback — dotenv skips vars already set
+config({ path: '.env' });
 
 const sql = neon(process.env.DATABASE_URL!);
 const db = drizzle(sql, { schema });
-
-// ── About Me code snippets (from AboutMe.tsx) ─────────────────────────────────
 
 const RUST_CODE = `// about_me.rs
 
@@ -23,6 +15,7 @@ pub struct Developer<'a> {
     pub role: &'a str,
     pub focus: &'a [&'a str],
     pub org: &'a str,
+    pub experience: &'a str,
 }
 
 impl<'a> Developer<'a> {
@@ -36,17 +29,18 @@ impl<'a> Developer<'a> {
                 "Systems programming",
                 "Database design",
             ],
-            org: "Oxide (Lead Developer)",
+            org: "Anesis (Lead Developer)",
+            experience: "1 year professional",
         }
     }
 
     pub fn introduce(&self) -> String {
         format!(
             "{} | {}\\n\\
-             Scalable backend systems with \\
+             {} experience building scalable backend systems with \\
              NestJS, Fastify & Rust.\\n\\
              Lead dev at {}.",
-            self.name, self.role, self.org,
+            self.name, self.role, self.experience, self.org,
         )
     }
 }
@@ -66,6 +60,7 @@ interface Developer {
   role: string;
   focus: readonly string[];
   org: string;
+  experience: string;
 }
 
 const me: Developer = {
@@ -77,12 +72,14 @@ const me: Developer = {
     'Systems programming',
     'Database design',
   ],
-  org: 'Oxide (Lead Developer)',
+  org: 'Anesis (Lead Developer)',
+  experience: '1 year professional',
 };
 
 function introduce(dev: Developer): string {
   return [
     \`\${dev.name} | \${dev.role}\`,
+    \`\${dev.experience} experience\`,
     \`Focus: \${dev.focus.join(', ')}.\`,
     \`Lead dev at \${dev.org}.\`,
   ].join('\\n');
@@ -104,6 +101,7 @@ interface DeveloperProfile {
   role: string;
   focus: string[];
   org: string;
+  experience: string;
 }
 
 @Injectable()
@@ -117,7 +115,8 @@ class DeveloperService {
       'Systems programming',
       'Database design',
     ],
-    org: 'Oxide (Lead Developer)',
+    org: 'Anesis (Lead Developer)',
+    experience: '1 year professional',
   };
 
   getProfile(): DeveloperProfile {
@@ -137,10 +136,8 @@ export class DeveloperController {
   }
 }`;
 
-// ── Skills (from src/constants/skills.ts) ─────────────────────────────────────
-
 const SKILLS_DATA = [
-  { logoUrl: '/Rust.svg', title: 'Rust', firstTried: '2025-07-22', category: 'Language', description: 'Systems programming language focused on memory safety and zero-cost abstractions. Used to build the Oxide CLI tool and explore low-level performance-critical code with Tokio and Axum.', docsUrl: 'https://doc.rust-lang.org/' },
+  { logoUrl: '/Rust.svg', title: 'Rust', firstTried: '2025-07-22', category: 'Language', description: 'Systems programming language focused on memory safety and zero-cost abstractions. Used to build the Anesis CLI tool and explore low-level performance-critical code with Tokio and Axum.', docsUrl: 'https://doc.rust-lang.org/' },
   { logoUrl: '/TypeScript.svg', title: 'TypeScript', firstTried: '2024-12-18', category: 'Language', description: 'Statically typed superset of JavaScript. Primary language across all backend (NestJS, Fastify) and full-stack projects, enabling strict type safety and better developer tooling.', docsUrl: 'https://www.typescriptlang.org/docs/' },
   { logoUrl: '/JavaScript.svg', title: 'JavaScript', firstTried: '2023-10-22', category: 'Language', description: 'Foundation of web development. Used before adopting TypeScript; now serves as the runtime substrate for all Node.js-based backend and browser code.', docsUrl: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript' },
   { logoUrl: '/Nest.js.svg', title: 'Nest.js', firstTried: '2025-02-09', category: 'Backend', description: 'Opinionated Node.js framework built on TypeScript with decorator-based architecture. Primary framework for building structured REST APIs, microservices, and GraphQL servers.', docsUrl: 'https://docs.nestjs.com/' },
@@ -161,7 +158,7 @@ const SKILLS_DATA = [
   { logoUrl: '/Docker.svg', title: 'Docker', firstTried: '2025-02-14', category: 'DevOps', description: 'Containerization platform. Used to package applications with their dependencies, manage local dev environments via Compose, and prepare images for deployment.', docsUrl: 'https://docs.docker.com/' },
   { logoUrl: '/1_amx8k-Upat1L7RzluiMcow.png', title: 'NX', firstTried: '2025-05-25', category: 'DevOps', description: 'Monorepo build system with smart caching and task orchestration. Used to manage multi-package TypeScript repositories with shared libraries and coordinated builds.', docsUrl: 'https://nx.dev/docs' },
   { logoUrl: '/Git.svg', title: 'Git', firstTried: '2025-02-09', category: 'DevOps', description: 'Distributed version control system. Used daily for branching, code review workflows, rebasing, and maintaining clean commit history across all projects.', docsUrl: 'https://git-scm.com/doc' },
-  { logoUrl: '/GitHub.svg', title: 'GitHub', firstTried: '2023-10-26', category: 'DevOps', description: 'Git hosting and collaboration platform. Primary home for all code — used for open-source work at the Oxide organization, CI/CD pipelines, and issue tracking.', docsUrl: 'https://docs.github.com/' },
+  { logoUrl: '/GitHub.svg', title: 'GitHub', firstTried: '2023-10-26', category: 'DevOps', description: 'Git hosting and collaboration platform. Primary home for all code — used for open-source work at the Anesis organization, CI/CD pipelines, and issue tracking.', docsUrl: 'https://docs.github.com/' },
   { logoUrl: '/Bun.svg', title: 'Bun', firstTried: '2025-04-03', category: 'DevOps', description: 'Fast all-in-one JavaScript runtime, bundler, and package manager. Preferred toolchain for new projects — significantly faster installs and script execution than npm.', docsUrl: 'https://bun.sh/docs' },
   { logoUrl: '/Yarn.svg', title: 'Yarn', firstTried: '2025-02-09', category: 'DevOps', description: 'JavaScript package manager with workspaces support. Used in earlier monorepo projects before switching to Bun; still encountered in legacy codebases.', docsUrl: 'https://yarnpkg.com/getting-started' },
   { logoUrl: '/Swagger.svg', title: 'Swagger', firstTried: '2025-02-28', category: 'DevOps', description: 'API documentation tool implementing the OpenAPI specification. Used with the NestJS Swagger module to auto-generate interactive API docs from decorators.', docsUrl: 'https://swagger.io/docs/' },
@@ -178,18 +175,12 @@ const SKILLS_DATA = [
   { logoUrl: '/Telegram_logo.svg.webp', title: 'Telegram Web App', firstTried: '2025-05-21', category: 'Frontend', description: 'Telegram Mini Apps platform for embedding web interfaces inside Telegram clients. Used to build React-based UIs that interact with Telegram bots and their backend.', docsUrl: 'https://core.telegram.org/bots/webapps' },
 ];
 
-// ── Contacts (from constants + HANDLES map in ContactsScreen.tsx) ─────────────
-
 const CONTACTS_DATA = [
   { title: 'Instagram', iconUrl: '/Instagram_icon.png', link: 'https://www.instagram.com/maksym_z_h_u_k/', handle: '@maksym_z_h_u_k', sortOrder: 0 },
   { title: 'Linkedin', iconUrl: '/LinkedIn_logo_initials.png.webp', link: 'https://www.linkedin.com/in/maksym-zhuk-417390252/', handle: 'Maksym Zhuk', sortOrder: 1 },
   { title: 'Telegram', iconUrl: '/Telegram_logo.svg.webp', link: 'https://t.me/Maksym_Zhuk7', handle: '@Maksym_Zhuk7', sortOrder: 2 },
   { title: 'Github', iconUrl: '/GitHub.svg', link: 'https://github.com/Maksym-Zhuk', handle: 'Maksym-Zhuk', sortOrder: 3 },
 ];
-
-// ── Project images (from src/constants/projectImg.ts) ─────────────────────────
-// Note: these are local /public paths. After seeding, upload them to Vercel Blob
-// via /admin/projects and update the URLs there.
 
 const PROJECT_IMAGES_DATA = [
   { repoName: 'fortuna', imageUrl: '/Screenshot 2025-06-27 002707.png' },
@@ -200,28 +191,24 @@ const PROJECT_IMAGES_DATA = [
 async function seed() {
   console.log('🌱 Seeding database...');
 
-  // 1. About Me
   console.log('  → about_me...');
   await db
     .insert(schema.aboutMe)
     .values({ id: 1, rustCode: RUST_CODE, tsCode: TS_CODE, nestCode: NEST_CODE })
     .onConflictDoNothing();
 
-  // 2. Skills
   console.log('  → skills...');
   await db
     .insert(schema.skills)
     .values(SKILLS_DATA.map((s, i) => ({ ...s, sortOrder: i })))
-    .onConflictDoNothing();
+    .onConflictDoNothing({ target: schema.skills.title });
 
-  // 3. Contacts
   console.log('  → contacts...');
   await db
     .insert(schema.contacts)
     .values(CONTACTS_DATA)
-    .onConflictDoNothing();
+    .onConflictDoNothing({ target: schema.contacts.title });
 
-  // 4. Project images
   console.log('  → project_images...');
   for (const img of PROJECT_IMAGES_DATA) {
     await db
@@ -230,27 +217,28 @@ async function seed() {
       .onConflictDoNothing();
   }
 
-  // 5. Featured organization — Oxide
-  console.log('  → organizations (Oxide)...');
+  console.log('  → organizations (Anesis)...');
   await db
     .insert(schema.organizations)
     .values({
-      name: 'Oxide',
-      slug: 'oxide-cli',
-      description: 'Cross-platform project scaffolding CLI — oxide-cli organization on GitHub',
-      githubUrl: 'https://github.com/oxide-cli',
+      name: 'Anesis',
+      slug: 'anesis-cli',
+      description: 'Cross-platform project scaffolding CLI — anesis-cli organization on GitHub',
+      githubUrl: 'https://github.com/anesis-dev',
+      websiteUrl: 'https://anesis-dev.vercel.app/',
       roleBadge: 'Lead Developer',
       languageName: 'Rust',
+      languagePct: 100,
+      releasesCount: 100,
       sortOrder: 0,
     })
-    .onConflictDoNothing();
+    .onConflictDoNothing({ target: schema.organizations.slug });
 
-  // 6. GitHub org
-  console.log('  → github_orgs (oxide-cli)...');
+  console.log('  → github_orgs (anesis-dev)...');
   await db
     .insert(schema.githubOrgs)
-    .values({ orgLogin: 'oxide-cli', displayName: 'Oxide', enabled: true })
-    .onConflictDoNothing();
+    .values({ orgLogin: 'anesis-dev', displayName: 'Anesis', enabled: true })
+    .onConflictDoNothing({ target: schema.githubOrgs.orgLogin });
 
   console.log('✅ Seed complete!');
 }

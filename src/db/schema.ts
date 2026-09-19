@@ -5,13 +5,14 @@ export const aboutMe = pgTable('about_me', {
   rustCode: text('rust_code').notNull().default(''),
   tsCode: text('ts_code').notNull().default(''),
   nestCode: text('nest_code').notNull().default(''),
+  hrSummary: text('hr_summary').notNull().default(''),
   updatedAt: timestamp('updated_at').defaultNow(),
 });
 
 export const skills = pgTable('skills', {
   id: serial('id').primaryKey(),
   logoUrl: text('logo_url').notNull(),
-  title: text('title').notNull(),
+  title: text('title').notNull().unique(),
   firstTried: date('first_tried').notNull(),
   category: text('category').notNull(),
   description: text('description').notNull(),
@@ -22,7 +23,7 @@ export const skills = pgTable('skills', {
 
 export const contacts = pgTable('contacts', {
   id: serial('id').primaryKey(),
-  title: text('title').notNull(),
+  title: text('title').notNull().unique(),
   iconUrl: text('icon_url').notNull(),
   link: text('link').notNull(),
   handle: text('handle'),
@@ -33,6 +34,7 @@ export const organizations = pgTable('organizations', {
   id: serial('id').primaryKey(),
   name: text('name').notNull(),
   slug: text('slug').notNull().unique(),
+  logoUrl: text('logo_url'),
   description: text('description').notNull().default(''),
   githubUrl: text('github_url').notNull(),
   websiteUrl: text('website_url'),

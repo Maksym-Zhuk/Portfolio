@@ -6,7 +6,7 @@ brand
 
 ## Users
 
-Primary audience is **technical recruiters and hiring engineering managers** evaluating Maksym Zhuk (a backend-first, Rust-leaning developer and lead of the Oxide CLI org) for roles. They arrive with limited time, skimming for fast credibility and scannable proof of skill: real shipped work, depth in backend/systems, and evidence of taste. The site must establish competence within seconds and reward a deeper read (Oxide, Rust CLI tooling, the project list) without making anyone dig for it.
+Primary audience is **technical recruiters and hiring engineering managers** evaluating Maksym Zhuk (a backend-first, Rust-leaning developer and lead of the Anesis CLI org) for roles. They arrive with limited time, skimming for fast credibility and scannable proof of skill: real shipped work, depth in backend/systems, and evidence of taste. The site must establish competence within seconds and reward a deeper read (Anesis, Rust CLI tooling, the project list) without making anyone dig for it.
 
 Secondary: engineering peers and open-source collaborators who recognize the work and judge it on craft.
 
@@ -26,7 +26,7 @@ A personal portfolio that presents Maksym as a precise, systems-minded engineer.
 
 ## Design Principles
 
-1. **The work speaks.** Lead with concrete proof — Oxide, Rust CLI tooling, real repos — not adjectives. Show, don't tell.
+1. **The work speaks.** Lead with concrete proof — Anesis, Rust CLI tooling, real repos — not adjectives. Show, don't tell.
 2. **Terminal-native, not terminal-cosplay.** The systems aesthetic should feel earned and functional (mono, grid, precise spacing), never a gimmicky "hacker" skin.
 3. **Fast credibility for a skimmer.** A recruiter should grasp the engineer type in seconds; depth is available but never required.
 4. **Restraint is the flex.** Confidence comes from precision and editing things out, not from effects. One deliberate motion beats five reflexive ones.

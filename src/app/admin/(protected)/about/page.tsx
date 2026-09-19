@@ -14,6 +14,7 @@ const schema = z.object({
   rustCode: z.string(),
   tsCode: z.string(),
   nestCode: z.string(),
+  hrSummary: z.string(),
 });
 type FormData = z.infer<typeof schema>;
 
@@ -39,7 +40,7 @@ export default function AboutPage() {
 
   const { register, handleSubmit, reset, formState: { isDirty, isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { rustCode: '', tsCode: '', nestCode: '' },
+    defaultValues: { rustCode: '', tsCode: '', nestCode: '', hrSummary: '' },
   });
 
   useEffect(() => {
@@ -65,11 +66,28 @@ export default function AboutPage() {
       <div>
         <h1 className="text-2xl font-bold font-mono">About Me</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Edit the three code editor tabs shown on the home page.
+          Edit the HR summary and the three code editor tabs shown on the home page.
         </p>
       </div>
 
       <form onSubmit={handleSubmit((d) => mutation.mutate(d))} className="flex flex-col gap-6">
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="hrSummary" className="font-mono text-xs text-muted-foreground">
+            HR summary (shown in the &quot;For HR&quot; view)
+          </Label>
+          <p className="text-xs text-muted-foreground font-mono">
+            Supports: <code># Heading</code>, <code>## Subheading</code>,{' '}
+            <code>**bold**</code>, <code>==green highlight==</code>. One line per
+            paragraph/heading.
+          </p>
+          <Textarea
+            id="hrSummary"
+            rows={8}
+            className="resize-y"
+            {...register('hrSummary')}
+          />
+        </div>
+
         {(
           [
             { name: 'rustCode', label: 'Rust tab (about_me.rs)', rows: 28 },

@@ -1,10 +1,10 @@
 import Link from 'next/link';
 
-export default function OxideSection() {
+export default function AnesisSection() {
   return (
     <section
-      id="oxide"
-      aria-label="Oxide open source organization"
+      id="anesis"
+      aria-label="Anesis open source organization"
       className="w-full py-16 scroll-mt-24"
     >
       <div className="flex flex-col gap-3 mb-8">
@@ -15,10 +15,10 @@ export default function OxideSection() {
       </div>
 
       <Link
-        href="https://github.com/oxide-cli"
+        href="https://github.com/anesis-cli"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Visit Oxide organization on GitHub"
+        aria-label="Visit Anesis organization on GitHub"
         className="group block"
       >
         <div className="relative border border-border rounded-xl p-6 sm:p-8 bg-card transition-all duration-300 hover:border-primary/50 hover:glow-primary-sm overflow-hidden">
@@ -61,7 +61,7 @@ export default function OxideSection() {
 
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-3 mb-3">
-                <h3 className="text-xl font-bold text-foreground">Oxide</h3>
+                <h3 className="text-xl font-bold text-foreground">Anesis</h3>
                 <span className="px-2 py-0.5 text-xs font-mono font-semibold rounded border border-primary/50 text-primary bg-primary/10">
                   Lead Developer
                 </span>

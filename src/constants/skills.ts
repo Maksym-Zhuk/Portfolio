@@ -7,7 +7,7 @@ export const Skills: Skill[] = [
     firstTried: '2025-07-22',
     category: 'Language',
     description:
-      'Systems programming language focused on memory safety and zero-cost abstractions. Used to build the Oxide CLI tool and explore low-level performance-critical code with Tokio and Axum.',
+      'Systems programming language focused on memory safety and zero-cost abstractions. Used to build the Anesis CLI tool and explore low-level performance-critical code with Tokio and Axum.',
     docsUrl: 'https://doc.rust-lang.org/',
   },
   {
@@ -200,7 +200,7 @@ export const Skills: Skill[] = [
     firstTried: '2023-10-26',
     category: 'DevOps',
     description:
-      'Git hosting and collaboration platform. Primary home for all code — used for open-source work at the Oxide organization, CI/CD pipelines, and issue tracking.',
+      'Git hosting and collaboration platform. Primary home for all code — used for open-source work at the Anesis organization, CI/CD pipelines, and issue tracking.',
     docsUrl: 'https://docs.github.com/',
   },
   {

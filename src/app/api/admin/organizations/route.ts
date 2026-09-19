@@ -8,6 +8,7 @@ import { requireAdmin } from '@/lib/adminGuard';
 const schema = z.object({
   name: z.string().min(1),
   slug: z.string().min(1),
+  logoUrl: z.string().optional().nullable(),
   description: z.string().default(''),
   githubUrl: z.string().url(),
   websiteUrl: z.string().url().optional().nullable(),
